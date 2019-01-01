@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 var express = require("express");
 var path = require("path");
 var favicon = require("serve-favicon");
@@ -21,11 +23,14 @@ var app = express();
 
 import schema from "./schema";
 import resolvers from "./resolvers";
-
+console.log("SECRET", process.env.SECRET);
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  context: { db }
+  context: {
+    db,
+    secret: process.env.SECRET
+  }
 });
 server.applyMiddleware({ app, path: "/graphql" });
 
