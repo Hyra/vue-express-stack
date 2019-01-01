@@ -35,7 +35,7 @@ var app = express();
 
 import schema from "./schema";
 import resolvers from "./resolvers";
-console.log("SECRET", process.env.SECRET);
+
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
@@ -52,23 +52,23 @@ server.applyMiddleware({ app, path: "/graphql" });
 
 // app.use(postgraphql("postgres://localhost:5432", "public", { graphiql: true }));
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log("synced");
   // populate author table with dummy data
-  // db.author.bulkCreate(
-  //   times(10, () => ({
-  //     firstName: faker.name.firstName(),
-  //     lastName: faker.name.lastName()
-  //   }))
-  // );
-  // // populate post table with dummy data
-  // db.post.bulkCreate(
-  //   times(10, () => ({
-  //     title: faker.lorem.sentence(),
-  //     content: faker.lorem.paragraph(),
-  //     authorId: random(1, 10)
-  //   }))
-  // );
+  db.author.bulkCreate(
+    times(10, () => ({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName()
+    }))
+  );
+  // populate post table with dummy data
+  db.post.bulkCreate(
+    times(10, () => ({
+      title: faker.lorem.sentence(),
+      content: faker.lorem.paragraph(),
+      authorId: random(1, 10)
+    }))
+  );
 });
 
 // view engine setup
