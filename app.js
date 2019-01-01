@@ -10,7 +10,19 @@ var sassMiddleware = require("node-sass-middleware");
 
 import db from "./models";
 
-const { ApolloServer } = require("apollo-server-express");
+const { ApolloServer, AuthenticationError } = require("apollo-server-express");
+import jwt from "jsonwebtoken";
+
+const getMe = async req => {
+  const token = req.headers["x-token"];
+  if (token) {
+    try {
+      return await jwt.verify(token, process.env.SECRET);
+    } catch (e) {
+      throw new AuthenticationError("Your session expired. Sign in again.");
+    }
+  }
+};
 
 import faker from "faker";
 import times from "lodash.times";
@@ -27,9 +39,13 @@ console.log("SECRET", process.env.SECRET);
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  context: {
-    db,
-    secret: process.env.SECRET
+  context: async ({ req }) => {
+    const me = await getMe(req);
+    return {
+      db,
+      me,
+      secret: process.env.SECRET
+    };
   }
 });
 server.applyMiddleware({ app, path: "/graphql" });
