@@ -36,19 +36,28 @@ var app = express();
 import schema from "./schema";
 import resolvers from "./resolvers";
 
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  context: async ({ req }) => {
-    const me = await getMe(req);
-    return {
-      db,
-      me,
-      secret: process.env.SECRET
-    };
+  context: async ({ req, connection }) => {
+    if (connection) {
+      return {
+        db
+      };
+    }
+    if (req) {
+      const me = await getMe(req);
+      return {
+        db,
+        me,
+        secret: process.env.SECRET
+      };
+    }
   }
 });
-server.applyMiddleware({ app, path: "/graphql" });
+apolloServer.applyMiddleware({ app, path: "/graphql" });
+
+app.apolloServer = apolloServer;
 
 // app.use(postgraphql("postgres://localhost:5432", "public", { graphiql: true }));
 

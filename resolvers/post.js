@@ -1,3 +1,5 @@
+import pubsub, { EVENTS } from "../subscription";
+
 export default {
   Query: {
     posts: async (parent, { authorId }, { db }, info) =>
@@ -5,12 +7,22 @@ export default {
     post: (parent, { id }, { db }, info) => db.post.findById(id)
   },
   Mutation: {
-    createPost: (parent, { title, content, authorId }, { db }, info) =>
-      db.post.create({
+    createPost: async (
+      parent,
+      { title, content, authorId },
+      { db, me },
+      info
+    ) => {
+      const post = await db.post.create({
         title: title,
         content: content,
         authorId: authorId
-      }),
+      });
+      pubsub.publish(EVENTS.POST.CREATED, {
+        postCreated: { post }
+      });
+      return post;
+    },
     updatePost: (parent, { title, content, id }, { db }, info) =>
       db.post.update(
         {
@@ -32,5 +44,10 @@ export default {
   },
   Post: {
     author: (parent, args, context, info) => parent.getAuthor()
+  },
+  Subscription: {
+    postCreated: {
+      subscribe: () => pubsub.asyncIterator(EVENTS.POST.CREATED)
+    }
   }
 };

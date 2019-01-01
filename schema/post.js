@@ -17,4 +17,10 @@ export default gql`
     updatePost(id: ID!, title: String, content: String!): [Int!]!
     deletePost(id: ID!): Int!
   }
+  extend type Subscription {
+    postCreated: PostCreated!
+  }
+  type PostCreated {
+    post: Post!
+  }
 `;
