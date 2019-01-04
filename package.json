@@ -94,11 +94,5 @@
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "babel": {
-    "presets": [
-      "env",
-      "es2015"
-    ]
   }
 }
