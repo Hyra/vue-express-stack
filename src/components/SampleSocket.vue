@@ -1,6 +1,6 @@
 <template>
   <div class="sample-api">
-    <h1>Sample Socket Component</h1>
+    <h2>Sample Socket Component</h2>
     <button @click="clickButton">Emit Event</button>
   </div>
 </template>

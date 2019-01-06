@@ -1,9 +1,7 @@
 <template>
   <div class="sample-api">
-    <h1>Sample API Component</h1>
-    <ul>
-      <li v-for="(user, index) in users" :key="index">{{ user.name }}</li>
-    </ul>
+    <h2>Sample API Component</h2>
+    <div v-for="(user, index) in users" :key="index">{{ user.name }}</div>
   </div>
 </template>
 

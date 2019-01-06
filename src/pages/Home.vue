@@ -1,19 +1,9 @@
 <template>
-  <div class="home">
-    <SampleApi />
-    <SampleSocket />
-  </div>
+  <div class="home"><h1>Home</h1></div>
 </template>
 
 <script>
-import SampleApi from "@/components/SampleApi.vue";
-import SampleSocket from "@/components/SampleSocket.vue";
-
 export default {
-  name: "home",
-  components: {
-    SampleApi,
-    SampleSocket
-  }
+  name: "home"
 };
 </script>
