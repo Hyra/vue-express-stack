@@ -7,7 +7,9 @@
     "server": "pm2 start pm2_config.json",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "vue-cli-service build",
+    "start": "pm2-runtime start pm2_config.json --env production"
   },
   "dependencies": {
     "apollo-server": "^2.3.1",
@@ -36,6 +38,7 @@
     "morgan": "~1.9.0",
     "mysql2": "^1.6.4",
     "node-sass-middleware": "0.9.8",
+    "pm2": "^3.2.4",
     "postgraphql": "^3.5.6",
     "pug": "2.0.0-beta11",
     "sequelize": "^4.42.0",
