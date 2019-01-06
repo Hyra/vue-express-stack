@@ -10,6 +10,7 @@ io.on("connection", function(socket) {
     console.log("Received ping", data);
     socket.emit("pongEvent", { msg: "Pong Local" });
     io.sockets.emit("pongEvent", { msg: "Pong Global" });
+    io.sockets.emit("sample/pongEvent", { msg: "Pong Global" });
   });
 });
 
