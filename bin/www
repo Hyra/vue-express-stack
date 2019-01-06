@@ -7,7 +7,7 @@ require("babel-register")({
   presets: ["es2015"]
 });
 
-var app = require("../app").app;
+var app = require("../app");
 var debug = require("debug")("dojokeep-graphql:server");
 var http = require("http");
 
@@ -22,10 +22,10 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-var server = require("../app").server;
+var server = http.createServer(app);
 
-const apolloServer = app.apolloServer;
-apolloServer.installSubscriptionHandlers(server);
+// const apolloServer = app.apolloServer;
+// apolloServer.installSubscriptionHandlers(server);
 
 // server.installSubscriptionHandlers(server);
 
@@ -34,6 +34,11 @@ apolloServer.installSubscriptionHandlers(server);
  */
 
 server.listen(port);
+
+var socketApi = require("../socketApi");
+var io = socketApi.io;
+io.listen(server);
+
 server.on("error", onError);
 server.on("listening", onListening);
 
