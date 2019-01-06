@@ -3,8 +3,19 @@
     {
       "name": "dojokeep",
       "script": "./bin/www",
-      "watch": true,
-      "exec_interpreter": "babel-node",
+      "watch": [
+        "app.js",
+        "routes",
+        "resolvers",
+        "models",
+        "schema",
+        "subscription",
+        "views"
+      ],
+      "ignore_watch": ["node_modules", "src"],
+      "watch_options": {
+        "followSymlinks": false
+      },
       "exec_mode": "fork"
     }
   ]

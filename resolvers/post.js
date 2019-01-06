@@ -2,17 +2,12 @@ import pubsub, { EVENTS } from "../subscription";
 
 export default {
   Query: {
-    posts: async (parent, { authorId }, { db }, info) =>
+    posts: async (parent, { authorId }, { db }) =>
       await db.post.findAll({ where: { authorId }, offset: 2 }),
-    post: (parent, { id }, { db }, info) => db.post.findById(id)
+    post: (parent, { id }, { db }) => db.post.findById(id)
   },
   Mutation: {
-    createPost: async (
-      parent,
-      { title, content, authorId },
-      { db, me },
-      info
-    ) => {
+    createPost: async (parent, { title, content, authorId }, { db }) => {
       const post = await db.post.create({
         title: title,
         content: content,
@@ -23,7 +18,7 @@ export default {
       });
       return post;
     },
-    updatePost: (parent, { title, content, id }, { db }, info) =>
+    updatePost: (parent, { title, content, id }, { db }) =>
       db.post.update(
         {
           title: title,
@@ -35,7 +30,7 @@ export default {
           }
         }
       ),
-    deletePost: (parent, { id }, { db }, info) =>
+    deletePost: (parent, { id }, { db }) =>
       db.post.destroy({
         where: {
           id: id
@@ -43,7 +38,7 @@ export default {
       })
   },
   Post: {
-    author: (parent, args, context, info) => parent.getAuthor()
+    author: parent => parent.getAuthor()
   },
   Subscription: {
     postCreated: {

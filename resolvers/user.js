@@ -10,8 +10,8 @@ const createToken = async (user, secret, expiresIn) => {
 
 export default {
   Query: {
-    users: (parent, args, { db }, info) => db.user.findAll(),
-    user: (parent, { id }, { db }, info) => db.user.findById(id)
+    users: (parent, args, { db }) => db.user.findAll(),
+    user: (parent, { id }, { db }) => db.user.findById(id)
   },
   Mutation: {
     signUp: async (parent, { username, email, password }, { db, secret }) => {

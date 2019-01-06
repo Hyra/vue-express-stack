@@ -3,15 +3,12 @@ import { isAuthenticated } from "./authorization";
 
 export default {
   Query: {
-    authors: combineResolvers(
-      isAuthenticated,
-      async (parent, args, { db }, info) => {
-        return await db.author.findAll();
-      }
-    ),
-    author: (parent, { id }, { db }, info) => db.author.findById(id)
+    authors: combineResolvers(isAuthenticated, async (parent, args, { db }) => {
+      return await db.author.findAll();
+    }),
+    author: (parent, { id }, { db }) => db.author.findById(id)
   },
   Author: {
-    posts: (parent, args, context, info) => parent.getPosts()
+    posts: parent => parent.getPosts()
   }
 };

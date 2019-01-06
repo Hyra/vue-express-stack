@@ -1,8 +1,10 @@
 require("dotenv").config();
 
-var express = require("express");
-var path = require("path");
-var favicon = require("serve-favicon");
+import express from "express";
+import path from "path";
+const fallback = require("express-history-api-fallback");
+
+// var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
@@ -28,7 +30,7 @@ import faker from "faker";
 import times from "lodash.times";
 import random from "lodash.random";
 
-var index = require("./routes/index");
+// var index = require("./routes/index");
 var users = require("./routes/users");
 
 var app = express();
@@ -62,7 +64,6 @@ app.apolloServer = apolloServer;
 // app.use(postgraphql("postgres://localhost:5432", "public", { graphiql: true }));
 
 db.sequelize.sync({ force: true }).then(() => {
-  console.log("synced");
   // populate author table with dummy data
   db.author.bulkCreate(
     times(10, () => ({
@@ -98,10 +99,13 @@ app.use(
     sourceMap: true
   })
 );
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", index);
-app.use("/users", users);
+// app.use("/", index);
+app.use("/api/users", users);
+
+app.use(express.static(path.join(__dirname, "./dist")));
+app.use(fallback(path.join(__dirname, "./dist/index.html")));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -111,7 +115,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
