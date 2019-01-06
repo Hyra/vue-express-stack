@@ -6,19 +6,19 @@ socketApi.io = io;
 
 io.on("connection", function(socket) {
   console.log("A user connected");
-  socket.on("emit_method", function(data) {
-    console.log("An emit_method event", data);
+  socket.on("pingEvent", function(data) {
+    console.log("Received ping", data);
+    socket.emit("pongEvent", { msg: "Pong Local" });
+    io.sockets.emit("pongEvent", { msg: "Pong Global" });
   });
 });
 
 setInterval(() => {
-  io.sockets.emit("time", { msg: "Hello World!" });
-  io.sockets.emit("customEmit", { msg: "a customEmit" });
-}, 2500);
+  io.sockets.emit("time", { msg: "Periodic Time" });
+}, 1000);
 
 socketApi.sendNotification = function() {
-  console.log("HAHA");
-  io.sockets.emit("time", { msg: "Some else!" });
+  io.sockets.emit("pongEvent", { msg: "Pong from notification" });
 };
 
 module.exports = socketApi;

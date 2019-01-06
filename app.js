@@ -30,7 +30,7 @@ import faker from "faker";
 import times from "lodash.times";
 import random from "lodash.random";
 
-// var index = require("./routes/index");
+var index = require("./routes/index");
 var users = require("./routes/users");
 
 var app = express();
@@ -101,7 +101,7 @@ app.use(
 );
 // app.use(express.static(path.join(__dirname, "public")));
 
-// app.use("/", index);
+app.use("/", index);
 app.use("/api/users", users);
 
 app.use(express.static(path.join(__dirname, "./dist")));
