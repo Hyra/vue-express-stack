@@ -2,24 +2,17 @@
   <div class="home">
     <h1 v-for="(user, index) in users" :key="index">{{ user.name }}</h1>
     <button @click="clickButton">Hello</button>
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <SampleApi />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-import axios from "axios";
+import SampleApi from "@/components/SampleApi.vue";
+
 export default {
   name: "home",
   components: {
-    HelloWorld
-  },
-  data() {
-    return {
-      users: []
-    };
+    SampleApi
   },
   sockets: {
     connect: function() {
@@ -34,14 +27,6 @@ export default {
     // time: function(data) {
     //   console.log("time!");
     // }
-  },
-  created() {
-    axios.get("/api/users").then(data => {
-      this.users = data.data.users;
-    });
-    // this.sockets.subscribe("time", data => {
-    // console.log(data);
-    // });
   },
   methods: {
     clickButton: function() {
