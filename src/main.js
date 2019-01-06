@@ -6,8 +6,12 @@ import VueSocketIO from "vue-socket.io";
 
 Vue.use(
   new VueSocketIO({
-    debug: process.env.VUE_APP_SOCKET_DEBUG,
-    connection: process.env.VUE_APP_SOCKET_URL,
+    debug: process.env.VUE_APP_SOCKET_DEBUG
+      ? process.env.VUE_APP_SOCKET_DEBUG
+      : false,
+    connection: process.env.VUE_APP_SOCKET_URL
+      ? process.env.VUE_APP_SOCKET_URL
+      : "/",
     vuex: {
       store,
       actionPrefix: "SOCKET_",
