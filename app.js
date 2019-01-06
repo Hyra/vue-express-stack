@@ -61,6 +61,12 @@ apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 app.apolloServer = apolloServer;
 
+var server = require("http").Server(app);
+var io = require("socket.io")(server);
+
+io.on("connection", function(socket) {
+  console.log("A user connsssected", socket);
+});
 // app.use(postgraphql("postgres://localhost:5432", "public", { graphiql: true }));
 
 db.sequelize.sync({ force: true }).then(() => {
@@ -125,4 +131,4 @@ app.use(function(err, req, res) {
   res.render("error");
 });
 
-module.exports = app;
+module.exports = { app: app, server: server };

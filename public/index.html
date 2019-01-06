@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>dojokeep</title>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="//localhost:3000/socket.io/socket.io.js"></script>
     <script>
-      var socket = io();
+      var socket = io("//localhost:3000");
       socket.on("connect", function(data) {
         console.log("Socket.io connected...");
       });
