@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>dojokeep</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on("connect", function(data) {
+        console.log("Socket.io connected...");
+      });
+
+      socket.on("time", function(data) {
+        console.log(data);
+      });
+      var socket = io();
+    </script>
   </head>
   <body>
     <noscript>
