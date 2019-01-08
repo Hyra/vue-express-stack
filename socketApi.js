@@ -14,6 +14,12 @@ io.on("connection", function(socket) {
   });
 });
 
+var nsp = io.of("secret");
+nsp.on("connection", function() {
+  // console.log("Connected to secret channel");
+  nsp.emit("hi", "everyone!");
+});
+
 setInterval(() => {
   io.sockets.emit("time", { msg: "Periodic Time" });
 }, 1000);
