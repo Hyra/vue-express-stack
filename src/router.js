@@ -9,9 +9,16 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./pages/Home.vue")
+        import(/* webpackChunkName: "Public" */ "./layouts/public.vue"),
+      children: [
+        {
+          path: "",
+          name: "home",
+          component: () =>
+            import(/* webpackChunkName: "home" */ "./pages/Home.vue")
+        }
+      ]
     },
     {
       path: "/samples",
