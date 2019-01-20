@@ -1,5 +1,5 @@
-query HelloWorld {
-  posts(authorId: 7) {
+query HelloWorld($authorId: Int) {
+  posts(authorId: $authorId) {
     title
   }
 }
