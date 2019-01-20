@@ -2,17 +2,9 @@
   "apps": [
     {
       "name": "dojokeep",
-      "script": "./bin/www",
-      "watch": [
-        "app.js",
-        "routes",
-        "resolvers",
-        "models",
-        "schema",
-        "subscription",
-        "views"
-      ],
-      "ignore_watch": ["node_modules", "src"],
+      "script": "./backend/bin/www",
+      "watch": ["backend"],
+      "ignore_watch": ["node_modules"],
       "watch_options": {
         "followSymlinks": false
       },
