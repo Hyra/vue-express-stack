@@ -17,6 +17,12 @@ export default new Router({
           name: "home",
           component: () =>
             import(/* webpackChunkName: "home" */ "./pages/public/Home.vue")
+        },
+        {
+          path: "signup",
+          name: "signup",
+          component: () =>
+            import(/* webpackChunkName: "signup" */ "./pages/public/Signup.vue")
         }
       ]
     }
