@@ -22,6 +22,11 @@ Vue.use(
 
 Vue.config.productionTip = false;
 
+import ElementUI from "element-ui";
+import locale from "element-ui/lib/locale/lang/en";
+import "./element.scss";
+Vue.use(ElementUI, { locale });
+
 new Vue({
   router,
   store,
