@@ -20,7 +20,6 @@ export default {
         email,
         password
       });
-
       return { token: createToken(user, secret, "30m") };
     },
     signIn: async (parent, { login, password }, { db, secret }) => {
