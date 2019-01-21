@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       username: {
         type: DataTypes.STRING,
-        unique: true,
+        unique: {
+          args: true,
+          msg: "Username is taken"
+        },
         allowNull: false,
         validate: {
           notEmpty: true
@@ -14,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
-        unique: true,
+        unique: {
+          args: true,
+          msg: "Email is taken"
+        },
         allowNull: false,
         validate: {
           notEmpty: true,
@@ -26,7 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notEmpty: true,
-          len: [7, 42]
+          len: {
+            args: [7, 42],
+            msg: "Password must be between 7 and 42 karakters."
+          }
         }
       }
     },

@@ -15,6 +15,9 @@ export default {
   },
   Mutation: {
     signUp: async (parent, { username, email, password }, { db, secret }) => {
+      // if (password.length < 10) {
+      //   throw new UserInputError("Password too short");
+      // }
       const user = await db.user.create({
         username,
         email,

@@ -1,7 +1,7 @@
 <template>
   <div class="signup">
     <h1>Signup</h1>
-
+    {{ errors.message }}
     <el-form ref="verificationForm" label-width="120px">
       <el-form-item label="Country">
         <el-select v-model="country" filterable auto-complete="off">
@@ -46,14 +46,60 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="trySignup">Update</el-button>
+        <el-button type="primary" @click="signup">Update</el-button>
       </el-form-item>
+      {{ errors.message }}
     </el-form>
   </div>
 </template>
 
 <script>
+import gql from "graphql-tag";
 export default {
-  name: "signup"
+  name: "signup",
+  data() {
+    return {
+      errors: {},
+      country: "Netherlands",
+      title: "dffd",
+      email: "dffdfd@dfdffd.nl",
+      password: "sdsdds"
+    };
+  },
+  methods: {
+    signup() {
+      this.errors = "";
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($username: String!, $email: String!, $password: String!) {
+              signUp(username: $username, email: $email, password: $password) {
+                token
+              }
+            }
+          `,
+          variables: {
+            username: this.title,
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(data => {
+          console.log("setting token");
+          localStorage.setItem("apollo-token", data.data.signUp.token);
+          // TODO: redirect to welcome page
+        })
+        .catch(error => {
+          console.log("error", error.graphQLErrors);
+          this.errors = error.graphQLErrors[0];
+        });
+    }
+  }
 };
 </script>
+
+<style lang="scss" scoped>
+.error {
+  border: 1px solid red;
+}
+</style>
