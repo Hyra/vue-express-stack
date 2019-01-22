@@ -46,9 +46,14 @@ const apolloServer = new ApolloServer({
     const message = error.message
       .replace("SequelizeValidationError: ", "")
       .replace("Validation error: ", "");
+    const fields =
+      error.extensions.exception.fields ||
+      error.extensions.exception.errors.path;
+    // const fields = error.extensions.exception.errors.path;
     return {
       ...error,
-      message
+      message,
+      fields
     };
   },
   context: async ({ req, connection }) => {
