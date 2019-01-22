@@ -1,7 +1,7 @@
 <template>
   <div class="signup">
     <h1>Signup</h1>
-    {{ errors.message }}
+
     <el-form ref="verificationForm" label-width="120px">
       <el-form-item label="Country">
         <el-select v-model="country" filterable auto-complete="off">
@@ -48,7 +48,8 @@
       <el-form-item>
         <el-button type="primary" @click="signup">Update</el-button>
       </el-form-item>
-      {{ errors.message }}
+
+      <span class="errors">{{ errors.message }}</span>
     </el-form>
   </div>
 </template>
@@ -101,5 +102,8 @@ export default {
 <style lang="scss" scoped>
 .error {
   border: 1px solid red;
+}
+.errors {
+  color: red;
 }
 </style>
