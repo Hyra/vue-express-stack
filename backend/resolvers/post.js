@@ -1,12 +1,12 @@
 import pubsub, { EVENTS } from "../subscription";
 
 import { combineResolvers } from "graphql-resolvers";
-import { isAuthenticated } from "./authorization";
+// import { isAuthenticated } from "./authorization";
 
 export default {
   Query: {
     posts: combineResolvers(
-      isAuthenticated,
+      // isAuthenticated,
       async (parent, { authorId }, { db }) =>
         await db.post.findAll({ where: { authorId } })
     ),

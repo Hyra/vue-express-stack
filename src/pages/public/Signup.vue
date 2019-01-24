@@ -3,6 +3,14 @@
     <h1>Signup</h1>
 
     <el-form ref="verificationForm" label-width="120px">
+      <el-form-item label="Dojo e-mail">
+        <el-input placeholder="Please input" v-model="email"></el-input>
+      </el-form-item>
+
+      <el-form-item label="Dojo name">
+        <el-input placeholder="Please input" v-model="title"></el-input>
+      </el-form-item>
+
       <el-form-item label="Country">
         <el-select v-model="country" filterable auto-complete="off">
           <el-option label="Australia" value="AU" />
@@ -31,12 +39,6 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Dojo name">
-        <el-input placeholder="Please input" v-model="title"></el-input>
-      </el-form-item>
-      <el-form-item label="E-mail">
-        <el-input placeholder="Please input" v-model="email"></el-input>
-      </el-form-item>
       <el-form-item label="Password">
         <el-input
           placeholder="Please input"
@@ -46,7 +48,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="signup">Update</el-button>
+        <el-button type="primary" @click="signup">Get started</el-button>
       </el-form-item>
 
       <span class="errors">{{ errors.message }}</span>
@@ -56,14 +58,17 @@
 
 <script>
 import gql from "graphql-tag";
+
+import faker from "faker";
+
 export default {
   name: "signup",
   data() {
     return {
-      errors: {},
+      errors: { message: "" },
       country: "Netherlands",
-      title: "dffd",
-      email: "dffdfd@dfdffd.nl",
+      title: `${faker.hacker.noun()} Dojo`,
+      email: faker.internet.exampleEmail().toLowerCase(),
       password: "sdsdds"
     };
   },
@@ -88,6 +93,7 @@ export default {
         .then(data => {
           console.log("setting token");
           localStorage.setItem("apollo-token", data.data.signUp.token);
+          location.href = `/${this.title}/admin/`;
           // TODO: redirect to welcome page
         })
         .catch(error => {

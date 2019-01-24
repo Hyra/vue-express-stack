@@ -22,6 +22,7 @@ const getMe = async req => {
     try {
       return await jwt.verify(token.replace("Bearer ", ""), process.env.SECRET);
     } catch (e) {
+      return "";
       // throw new AuthenticationError("Your session expired. Sign in again.");
     }
   }
