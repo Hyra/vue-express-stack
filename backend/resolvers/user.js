@@ -14,15 +14,28 @@ export default {
     user: (parent, { id }, { db }) => db.user.findById(id)
   },
   Mutation: {
-    signUp: async (parent, { username, email, password }, { db, secret }) => {
+    signUp: async (
+      parent,
+      { country, title, handle, email, password },
+      { db, secret }
+    ) => {
       // if (password.length < 10) {
       //   throw new UserInputError("Password too short");
       // }
-      const user = await db.user.create({
-        username,
-        email,
-        password
+
+      const user = await db.user.create({ email: email, password: password });
+
+      const dojo = await db.dojo.create({
+        title: title,
+        country: country,
+        handle: handle
       });
+
+      await user.setDojo(dojo);
+      await dojo.setUsers(user);
+
+      // const d = await db.dojo.findById(1, { include: [db.user] });
+
       return { token: createToken(user, secret, "30m") };
     },
     signIn: async (parent, { login, password }, { db, secret }) => {

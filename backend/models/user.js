@@ -4,17 +4,6 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "user",
     {
-      username: {
-        type: DataTypes.STRING,
-        unique: {
-          args: true,
-          msg: "Username is taken"
-        },
-        allowNull: false,
-        validate: {
-          notEmpty: true
-        }
-      },
       email: {
         type: DataTypes.STRING,
         unique: {
@@ -69,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
 
   User.prototype.validatePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
+  };
+
+  User.associate = models => {
+    User.belongsTo(models.dojo);
   };
 
   return User;

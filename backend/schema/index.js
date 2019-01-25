@@ -3,6 +3,7 @@ import { gql } from "apollo-server-express";
 import postSchema from "./post";
 import authorSchema from "./author";
 import userSchema from "./user";
+import dojoSchema from "./dojo";
 
 const linkSchema = gql`
   type Query {
@@ -18,4 +19,4 @@ const linkSchema = gql`
   }
 `;
 
-export default [linkSchema, postSchema, authorSchema, userSchema];
+export default [linkSchema, postSchema, authorSchema, userSchema, dojoSchema];

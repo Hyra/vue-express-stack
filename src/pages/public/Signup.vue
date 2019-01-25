@@ -11,6 +11,22 @@
         <el-input placeholder="Please input" v-model="title"></el-input>
       </el-form-item>
 
+      <el-form-item label="Dojo URL">
+        <el-input placeholder="" v-model="handle" @input="checkHandle">
+          <template slot="prepend"
+            >https://dojokeep.com/</template
+          >
+          <i
+            class="el-input__icon"
+            :class="
+              handleAvailable ? 'el-icon-check good' : 'el-icon-error error'
+            "
+            slot="suffix"
+          >
+          </i>
+        </el-input>
+      </el-form-item>
+
       <el-form-item label="Country">
         <el-select v-model="country" filterable auto-complete="off">
           <el-option label="Australia" value="AU" />
@@ -68,24 +84,65 @@ export default {
       errors: { message: "" },
       country: "Netherlands",
       title: `${faker.hacker.noun()} Dojo`,
+      handle: `${faker.hacker.noun()}`,
       email: faker.internet.exampleEmail().toLowerCase(),
-      password: "sdsdds"
+      password: "qwertyqwerty",
+      handleAvailable: false
     };
   },
   methods: {
+    checkHandle() {
+      console.log(this.handle);
+      this.$apollo
+        .query({
+          query: gql`
+            query checkHandle($handle: String!) {
+              isHandleAvailable(handle: $handle) {
+                available
+              }
+            }
+          `,
+          variables: {
+            handle: this.handle
+          }
+        })
+        .then(data => {
+          this.handleAvailable = data.data.isHandleAvailable.available;
+        });
+    },
     signup() {
       this.errors = "";
+      if (!this.handleAvailable) {
+        this.errors = {
+          message: "This handle is already taken."
+        };
+        return false;
+      }
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($username: String!, $email: String!, $password: String!) {
-              signUp(username: $username, email: $email, password: $password) {
+            mutation(
+              $country: String!
+              $title: String!
+              $handle: String!
+              $email: String!
+              $password: String!
+            ) {
+              signUp(
+                country: $country
+                title: $title
+                handle: $handle
+                email: $email
+                password: $password
+              ) {
                 token
               }
             }
           `,
           variables: {
-            username: this.title,
+            country: this.country,
+            title: this.title,
+            handle: this.handle,
             email: this.email,
             password: this.password
           }
@@ -93,8 +150,7 @@ export default {
         .then(data => {
           console.log("setting token");
           localStorage.setItem("apollo-token", data.data.signUp.token);
-          location.href = `/${this.title}/admin/`;
-          // TODO: redirect to welcome page
+          location.href = `/${this.handle}/`;
         })
         .catch(error => {
           console.log("error", error.graphQLErrors);
@@ -107,7 +163,10 @@ export default {
 
 <style lang="scss" scoped>
 .error {
-  border: 1px solid red;
+  color: red;
+}
+.good {
+  color: green;
 }
 .errors {
   color: red;
