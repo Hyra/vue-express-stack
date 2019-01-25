@@ -24,9 +24,8 @@ app.set("port", port);
 
 var server = http.createServer(app);
 
-// const apolloServer = app.apolloServer;
-// apolloServer.installSubscriptionHandlers(server);
-
+const apolloServer = app.apolloServer;
+apolloServer.installSubscriptionHandlers(server);
 // server.installSubscriptionHandlers(server);
 
 /**
@@ -35,9 +34,9 @@ var server = http.createServer(app);
 
 server.listen(port);
 
-var socketApi = require("../socketApi");
-var io = socketApi.io;
-io.listen(server);
+// var socketApi = require("../socketApi");
+// var io = socketApi.io;
+// io.listen(server);
 
 server.on("error", onError);
 server.on("listening", onListening);

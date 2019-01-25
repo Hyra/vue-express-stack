@@ -12,16 +12,18 @@ var sassMiddleware = require("node-sass-middleware");
 
 import db from "./models";
 
-const { ApolloServer, AuthenticationError } = require("apollo-server-express");
+// const { ApolloServer, AuthenticationError } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 import jwt from "jsonwebtoken";
 
 const getMe = async req => {
-  const token = req.headers["x-token"];
+  const token = req.headers["authorization"];
   if (token) {
     try {
-      return await jwt.verify(token, process.env.SECRET);
+      return await jwt.verify(token.replace("Bearer ", ""), process.env.SECRET);
     } catch (e) {
-      throw new AuthenticationError("Your session expired. Sign in again.");
+      return "";
+      // throw new AuthenticationError("Your session expired. Sign in again.");
     }
   }
 };
@@ -41,6 +43,20 @@ import resolvers from "./resolvers";
 const apolloServer = new ApolloServer({
   typeDefs: schema,
   resolvers,
+  formatError: error => {
+    const message = error.message
+      .replace("SequelizeValidationError: ", "")
+      .replace("Validation error: ", "");
+    // const fields =
+    // error.extensions.exception.fields ||
+    // error.extensions.exception.errors.path;
+    // const fields = error.extensions.exception.errors.path;
+    return {
+      ...error,
+      message
+      // fields
+    };
+  },
   context: async ({ req, connection }) => {
     if (connection) {
       return {
@@ -60,8 +76,6 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 app.apolloServer = apolloServer;
-
-// app.use(postgraphql("postgres://localhost:5432", "public", { graphiql: true }));
 
 db.sequelize.sync({ force: true }).then(() => {
   // populate author table with dummy data

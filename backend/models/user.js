@@ -4,17 +4,12 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "user",
     {
-      username: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-        validate: {
-          notEmpty: true
-        }
-      },
       email: {
         type: DataTypes.STRING,
-        unique: true,
+        unique: {
+          args: true,
+          msg: "Email is taken"
+        },
         allowNull: false,
         validate: {
           notEmpty: true,
@@ -26,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notEmpty: true,
-          len: [7, 42]
+          len: {
+            args: [7, 42],
+            msg: "Password must be between 7 and 42 karakters."
+          }
         }
       }
     },
@@ -60,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
 
   User.prototype.validatePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
+  };
+
+  User.associate = models => {
+    User.belongsTo(models.dojo);
   };
 
   return User;

@@ -1,9 +1,15 @@
 import pubsub, { EVENTS } from "../subscription";
 
+import { combineResolvers } from "graphql-resolvers";
+// import { isAuthenticated } from "./authorization";
+
 export default {
   Query: {
-    posts: async (parent, { authorId }, { db }) =>
-      await db.post.findAll({ where: { authorId }, offset: 2 }),
+    posts: combineResolvers(
+      // isAuthenticated,
+      async (parent, { authorId }, { db }) =>
+        await db.post.findAll({ where: { authorId } })
+    ),
     post: (parent, { id }, { db }) => db.post.findById(id)
   },
   Mutation: {
