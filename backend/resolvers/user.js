@@ -32,7 +32,7 @@ export default {
       });
 
       await user.setDojo(dojo);
-      await dojo.setUsers(user);
+      // await dojo.setUsers(user);
 
       // const d = await db.dojo.findById(1, { include: [db.user] });
 
