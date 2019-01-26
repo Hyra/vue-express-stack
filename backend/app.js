@@ -29,8 +29,8 @@ const getMe = async req => {
 };
 
 import faker from "faker";
-import times from "lodash.times";
-import random from "lodash.random";
+// import times from "lodash.times";
+// import random from "lodash.random";
 
 var index = require("./routes/index");
 var users = require("./routes/users");
@@ -77,22 +77,35 @@ apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 app.apolloServer = apolloServer;
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: true }).then(async () => {
   // populate author table with dummy data
-  db.author.bulkCreate(
-    times(10, () => ({
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName()
-    }))
-  );
+
+  const user = await db.user.create({
+    email: `${faker.internet.exampleEmail().toLowerCase()}`,
+    password: "testtest"
+  });
+
+  const dojo = await db.dojo.create({
+    title: `${faker.hacker.noun()} Dojo`,
+    country: "Netherlands",
+    handle: `${faker.hacker.noun()}`
+  });
+
+  await user.setDojo(dojo);
+  // db.author.bulkCreate(
+  //   times(10, () => ({
+  //     firstName: faker.name.firstName(),
+  //     lastName: faker.name.lastName()
+  //   }))
+  // );
   // populate post table with dummy data
-  db.post.bulkCreate(
-    times(10, () => ({
-      title: faker.lorem.sentence(),
-      content: faker.lorem.paragraph(),
-      authorId: random(1, 10)
-    }))
-  );
+  // db.post.bulkCreate(
+  //   times(10, () => ({
+  //     title: faker.lorem.sentence(),
+  //     content: faker.lorem.paragraph(),
+  //     authorId: random(1, 10)
+  //   }))
+  // );
 });
 
 // view engine setup
