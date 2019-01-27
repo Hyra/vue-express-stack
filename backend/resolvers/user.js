@@ -31,7 +31,8 @@ export default {
         handle: handle
       });
 
-      await user.setDojo(dojo);
+      await user.addDojo(dojo);
+      await dojo.addSensei(user);
       // await dojo.setUsers(user);
 
       // const d = await db.dojo.findById(1, { include: [db.user] });
@@ -52,8 +53,16 @@ export default {
       }
 
       // Check if we are a sensei
-      const sensei = await db.user.isSensei(user);
-      if (!sensei) {
+      const isSensei = await db.dojo.findOne({
+        include: [
+          {
+            model: db.user,
+            as: "senseis",
+            where: { email: user.email }
+          }
+        ]
+      });
+      if (!isSensei) {
         throw new UserInputError("No user found with this login credentials.");
       }
 

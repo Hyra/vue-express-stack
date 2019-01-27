@@ -47,15 +47,6 @@ module.exports = (sequelize, DataTypes) => {
     return user;
   };
 
-  User.isSensei = async user => {
-    const dojo = await user.getDojo();
-    const senseis = await dojo.getSenseis();
-    const isSensei = senseis.filter(sensei => {
-      return sensei.id === user.id;
-    });
-    return isSensei.length;
-  };
-
   User.beforeCreate(async user => {
     user.password = await user.generatePasswordHash();
   });
@@ -70,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.associate = models => {
-    User.belongsTo(models.dojo);
+    User.belongsToMany(models.dojo, { as: "dojos", through: "user_dojos" });
   };
 
   return User;
