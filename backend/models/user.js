@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.findByLogin = async login => {
     let user = await User.findOne({
-      where: { username: login }
+      where: { email: login }
     });
 
     if (!user) {
@@ -45,6 +45,15 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     return user;
+  };
+
+  User.isSensei = async user => {
+    const dojo = await user.getDojo();
+    const senseis = await dojo.getSenseis();
+    const isSensei = senseis.filter(sensei => {
+      return sensei.id === user.id;
+    });
+    return isSensei.length;
   };
 
   User.beforeCreate(async user => {

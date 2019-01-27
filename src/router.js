@@ -10,7 +10,7 @@ export default new Router({
     {
       path: "/",
       component: () =>
-        import(/* webpackChunkName: "Public" */ "./layouts/Public.vue"),
+        import(/* webpackChunkName: "public" */ "./layouts/Public.vue"),
       children: [
         {
           path: "",
@@ -32,10 +32,10 @@ export default new Router({
             import(/* webpackChunkName: "signup" */ "./pages/auth/Signup.vue")
         },
         {
-          path: "login",
-          name: "login",
+          path: "admin/login",
+          name: "admin-login",
           component: () =>
-            import(/* webpackChunkName: "login" */ "./pages/auth/Login.vue")
+            import(/* webpackChunkName: "login" */ "./pages/auth/AdminLogin.vue")
         },
         {
           path: "forgot-password",
@@ -60,7 +60,7 @@ export default new Router({
     {
       path: "/admin",
       component: () =>
-        import(/* webpackChunkName: "Public" */ "./layouts/Admin.vue"),
+        import(/* webpackChunkName: "admin" */ "./layouts/Admin.vue"),
       children: [
         {
           path: "",

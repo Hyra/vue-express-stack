@@ -38,8 +38,8 @@ export default {
 
       return { token: createToken(user, secret, "30m") };
     },
-    signIn: async (parent, { login, password }, { db, secret }) => {
-      const user = await db.user.findByLogin(login);
+    adminSignIn: async (parent, { email, password }, { db, secret }) => {
+      const user = await db.user.findByLogin(email);
 
       if (!user) {
         throw new UserInputError("No user found with this login credentials.");
@@ -49,6 +49,12 @@ export default {
 
       if (!isValid) {
         throw new AuthenticationError("Invalid password.");
+      }
+
+      // Check if we are a sensei
+      const sensei = await db.user.isSensei(user);
+      if (!sensei) {
+        throw new UserInputError("No user found with this login credentials.");
       }
 
       return { token: createToken(user, secret, "30m") };

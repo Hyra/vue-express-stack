@@ -33,10 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  //   Dojo.hasOne(User, { foreignKey: "sensei_id" });
-
   Dojo.associate = models => {
-    Dojo.hasMany(models.user);
+    Dojo.belongsToMany(models.user, { as: "Students", through: "students" });
+    Dojo.belongsToMany(models.user, { as: "Senseis", through: "senseis" });
   };
 
   return Dojo;

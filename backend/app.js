@@ -80,18 +80,46 @@ app.apolloServer = apolloServer;
 db.sequelize.sync({ force: true }).then(async () => {
   // populate author table with dummy data
 
-  const user = await db.user.create({
-    email: `${faker.internet.exampleEmail().toLowerCase()}`,
+  const sensei = await db.user.create({
+    // email: `sensei_${faker.internet.exampleEmail().toLowerCase()}`,
+    email: `sensei@testdojo.nl`,
+    password: "testtest"
+  });
+
+  const student1 = await db.user.create({
+    email: `student1@testdojo.nl`,
+    password: "testtest"
+  });
+
+  const student2 = await db.user.create({
+    email: `student2@testdojo.nl`,
     password: "testtest"
   });
 
   const dojo = await db.dojo.create({
     title: `${faker.hacker.noun()} Dojo`,
     country: "Netherlands",
-    handle: `${faker.hacker.noun()}`
+    handle: `testdojo`
   });
 
-  await user.setDojo(dojo);
+  await dojo.addStudent(student1);
+  await dojo.addStudent(student2);
+  await dojo.addSensei(sensei);
+
+  await student1.setDojo(dojo);
+  await student2.setDojo(dojo);
+  await sensei.setDojo(dojo);
+
+  // const res = await db.user.findOne({
+  //   where: { email: `sensei@something.nl` },
+  //   include: [{ model: db.dojo }]
+  // });
+  // console.log(res.dojo);
+
+  // const senseis = await dojo.getSenseis();
+  // console.log(senseis.length);
+  // const students = await dojo.getStudents();
+  // console.log(students.length);
   // db.author.bulkCreate(
   //   times(10, () => ({
   //     firstName: faker.name.firstName(),
