@@ -58,7 +58,7 @@ export default new Router({
       ]
     },
     {
-      path: "/:dojoSlug",
+      path: "/admin",
       component: () =>
         import(/* webpackChunkName: "Public" */ "./layouts/Admin.vue"),
       children: [
@@ -67,6 +67,115 @@ export default new Router({
           name: "dashboard",
           component: () =>
             import(/* webpackChunkName: "dashboard" */ "./pages/admin/Dashboard.vue")
+        },
+        {
+          path: "students",
+          name: "students",
+          component: () =>
+            import(/* webpackChunkName: "students" */ "./pages/admin/Students.vue")
+        },
+        {
+          path: "students/:studentId",
+          name: "student",
+          component: () =>
+            import(/* webpackChunkName: "student" */ "./pages/admin/Student.vue")
+        },
+        {
+          path: "students/new",
+          name: "student-new",
+          component: () =>
+            import(/* webpackChunkName: "student-new" */ "./pages/admin/StudentNew.vue")
+        },
+        {
+          path: "billing/invoices",
+          name: "invoices",
+          component: () =>
+            import(/* webpackChunkName: "invoices" */ "./pages/admin/Invoices.vue")
+        },
+        {
+          path: "billing/invoices/:invoiceId",
+          name: "invoice",
+          component: () =>
+            import(/* webpackChunkName: "invoice" */ "./pages/admin/Invoice.vue")
+        },
+        {
+          path: "billing/contribution-plans",
+          name: "contribution-plans",
+          component: () =>
+            import(/* webpackChunkName: "contribution-plans" */ "./pages/admin/ContributionPlans.vue")
+        },
+        {
+          path: "billing/contribution-plans/:planId",
+          name: "plan",
+          component: () =>
+            import(/* webpackChunkName: "plan" */ "./pages/admin/ContributionPlan.vue")
+        },
+        {
+          path: "billing/subscriptions",
+          name: "subscriptions",
+          component: () =>
+            import(/* webpackChunkName: "subscriptions" */ "./pages/admin/Subscriptions.vue")
+        },
+        {
+          path: "balance",
+          name: "balance",
+          component: () =>
+            import(/* webpackChunkName: "balance" */ "./pages/admin/BalanceOverview.vue")
+        },
+        {
+          path: "balance/payouts",
+          name: "payouts",
+          component: () =>
+            import(/* webpackChunkName: "payouts" */ "./pages/admin/BalancePayouts.vue")
+        },
+        {
+          path: "balance/transactions",
+          name: "transactions",
+          component: () =>
+            import(/* webpackChunkName: "transactions" */ "./pages/admin/BalanceTransactions.vue")
+        },
+        {
+          path: "settings/profile",
+          name: "settings",
+          component: () =>
+            import(/* webpackChunkName: "settings" */ "./pages/admin/Settings.vue")
+        },
+        {
+          path: "settings/payments",
+          name: "paymentsettings",
+          component: () =>
+            import(/* webpackChunkName: "paymentsettings" */ "./pages/admin/PaymentSettings.vue")
+        }
+      ]
+    },
+    {
+      path: "/:dojoSlug",
+      component: () =>
+        import(/* webpackChunkName: "Student" */ "./layouts/Student.vue"),
+      children: [
+        {
+          path: "",
+          name: "student-dashboard",
+          component: () =>
+            import(/* webpackChunkName: "student-dashboard" */ "./pages/student/Dashboard.vue")
+        },
+        {
+          path: "invoices",
+          name: "student-invoices",
+          component: () =>
+            import(/* webpackChunkName: "student-dashboard" */ "./pages/student/Invoices.vue")
+        },
+        {
+          path: "invoice/:invoiceId",
+          name: "student-invoice",
+          component: () =>
+            import(/* webpackChunkName: "student-dashboard" */ "./pages/student/Invoice.vue")
+        },
+        {
+          path: "settings",
+          name: "student-settings",
+          component: () =>
+            import(/* webpackChunkName: "student-dashboard" */ "./pages/student/Settings.vue")
         }
       ]
     }
