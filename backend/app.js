@@ -106,9 +106,16 @@ db.sequelize.sync({ force: true }).then(async () => {
   await dojo.addStudent(student2);
   await dojo.addSensei(sensei);
 
-  await student1.addDojo(dojo);
-  await student2.addDojo(dojo);
-  await sensei.addDojo(dojo);
+  const profile = await db.profile.create({
+    stripe_id: "123"
+  });
+  profile.setDojo(dojo);
+
+  await student1.addProfile(profile);
+
+  // await student1.addDojo(dojo);
+  // await student2.addDojo(dojo);
+  // await sensei.addDojo(dojo);
 
   // const res = await db.dojo.findOne({
   //   // where: { "senseis.user.email": `sensei@something.nl` },

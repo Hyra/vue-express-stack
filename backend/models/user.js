@@ -61,7 +61,12 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.associate = models => {
-    User.belongsToMany(models.dojo, { as: "dojos", through: "user_dojos" });
+    User.hasMany(models.profile);
+    // User.belongsToMany(models.dojo, { as: "dojos", through: "user_dojos" });
+    // User.belongsToMany(models.profile, {
+    //   as: "profile",
+    //   through: "user_profiles"
+    // });
   };
 
   return User;
