@@ -110,17 +110,17 @@ db.sequelize.sync({ force: true }).then(async () => {
   await student2.addDojo(dojo);
   await sensei.addDojo(dojo);
 
-  const res = await db.dojo.findOne({
-    // where: { "senseis.user.email": `sensei@something.nl` },
-    include: [
-      {
-        model: db.user,
-        as: "senseis",
-        where: { email: "sensei@testdojo.nl" }
-      }
-    ]
-  });
-  console.log(res);
+  // const res = await db.dojo.findOne({
+  //   // where: { "senseis.user.email": `sensei@something.nl` },
+  //   include: [
+  //     {
+  //       model: db.user,
+  //       as: "senseis",
+  //       where: { email: "sensei@testdojo.nl" }
+  //     }
+  //   ]
+  // });
+  // console.log(res);
 
   // const senseis = await dojo.getSenseis();
   // console.log(senseis.length);

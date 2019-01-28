@@ -32,10 +32,10 @@ export default new Router({
             import(/* webpackChunkName: "signup" */ "./pages/auth/Signup.vue")
         },
         {
-          path: "admin/login",
-          name: "admin-login",
+          path: "login",
+          name: "login",
           component: () =>
-            import(/* webpackChunkName: "login" */ "./pages/auth/AdminLogin.vue")
+            import(/* webpackChunkName: "login" */ "./pages/auth/Login.vue")
         },
         {
           path: "forgot-password",
@@ -54,6 +54,12 @@ export default new Router({
           name: "token-expired",
           component: () =>
             import(/* webpackChunkName: "token-expired" */ "./pages/auth/TokenExpired.vue")
+        },
+        {
+          path: "dojos",
+          name: "dojos",
+          component: () =>
+            import(/* webpackChunkName: "token-expired" */ "./pages/auth/Dojos.vue")
         }
       ]
     },

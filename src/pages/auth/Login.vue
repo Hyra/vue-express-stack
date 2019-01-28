@@ -40,8 +40,8 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation adminSignIn($email: String!, $password: String!) {
-              adminSignIn(email: $email, password: $password) {
+            mutation signIn($email: String!, $password: String!) {
+              signIn(email: $email, password: $password) {
                 token
               }
             }
@@ -52,8 +52,8 @@ export default {
           }
         })
         .then(data => {
-          localStorage.setItem("apollo-token", data.data.adminSignIn.token);
-          location.href = `/admin/`;
+          localStorage.setItem("apollo-token", data.data.signIn.token);
+          location.href = `/dojos`;
         })
         .catch(() => {
           this.errors = {

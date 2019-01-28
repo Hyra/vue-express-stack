@@ -39,7 +39,7 @@ export default {
 
       return { token: createToken(user, secret, "30m") };
     },
-    adminSignIn: async (parent, { email, password }, { db, secret }) => {
+    signIn: async (parent, { email, password }, { db, secret }) => {
       const user = await db.user.findByLogin(email);
 
       if (!user) {
@@ -53,18 +53,18 @@ export default {
       }
 
       // Check if we are a sensei
-      const isSensei = await db.dojo.findOne({
-        include: [
-          {
-            model: db.user,
-            as: "senseis",
-            where: { email: user.email }
-          }
-        ]
-      });
-      if (!isSensei) {
-        throw new UserInputError("No user found with this login credentials.");
-      }
+      // const isSensei = await db.dojo.findOne({
+      //   include: [
+      //     {
+      //       model: db.user,
+      //       as: "senseis",
+      //       where: { email: user.email }
+      //     }
+      //   ]
+      // });
+      // if (!isSensei) {
+      //   throw new UserInputError("No user found with this login credentials.");
+      // }
 
       return { token: createToken(user, secret, "30m") };
     }
