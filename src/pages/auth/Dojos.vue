@@ -1,6 +1,10 @@
 <template>
   <div class="dojos">
     <h1>Dojos</h1>
+    <h2>ME</h2>
+    <pre>
+      {{ me }}
+    </pre>
     <h2>Dojos</h2>
     <pre>
       {{ dojos }}
@@ -19,6 +23,16 @@ export default {
         query {
           dojos {
             title
+          }
+        }
+      `
+    },
+    me: {
+      query: gql`
+        query {
+          me {
+            id
+            email
           }
         }
       `

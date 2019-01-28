@@ -1,6 +1,8 @@
 require("dotenv").config();
 
 import express from "express";
+import session from "express-session";
+import cors from "cors";
 import path from "path";
 const fallback = require("express-history-api-fallback");
 
@@ -12,6 +14,11 @@ var sassMiddleware = require("node-sass-middleware");
 
 import db from "./models";
 
+const expressSession = require("express-session");
+const SessionStore = require("express-session-sequelize")(expressSession.Store);
+const sequelizeSessionStore = new SessionStore({
+  db: db.sequelize
+});
 // const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 const { ApolloServer } = require("apollo-server-express");
 import jwt from "jsonwebtoken";
@@ -36,6 +43,31 @@ var index = require("./routes/index");
 var users = require("./routes/users");
 
 var app = express();
+// var corsOptions = {
+//   origin: function(req) {
+//     console.log(req);
+//     return req;
+//   }, //"http://localhost:8080/",
+//   credentials: true, // <-- REQUIRED backend setting,
+//   preflightContinue: true
+// };
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions)); // include before other routes
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
+
+app.use(
+  session({
+    secret: "keep it secret, keep it safe.",
+    store: sequelizeSessionStore,
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 import schema from "./schema";
 import resolvers from "./resolvers";
@@ -68,12 +100,13 @@ const apolloServer = new ApolloServer({
       return {
         db,
         me,
+        req,
         secret: process.env.SECRET
       };
     }
   }
 });
-apolloServer.applyMiddleware({ app, path: "/graphql" });
+apolloServer.applyMiddleware({ app, path: "/graphql", cors: false });
 
 app.apolloServer = apolloServer;
 
@@ -102,16 +135,27 @@ db.sequelize.sync({ force: true }).then(async () => {
     handle: `testdojo`
   });
 
-  await dojo.addStudent(student1);
-  await dojo.addStudent(student2);
-  await dojo.addSensei(sensei);
+  // await dojo.addStudent(student1);
+  // await dojo.addStudent(student2);
+  // await dojo.addSensei(sensei);
 
   const profile = await db.profile.create({
     stripe_id: "123"
   });
-  profile.setDojo(dojo);
-
+  await profile.setDojo(dojo);
   await student1.addProfile(profile);
+
+  const profile2 = await db.profile.create({
+    stripe_id: "234"
+  });
+  await profile2.setDojo(dojo);
+  await student2.addProfile(profile2);
+
+  const profile3 = await db.profile.create({
+    stripe_id: "456"
+  });
+  await profile3.setDojo(dojo);
+  await sensei.addProfile(profile);
 
   // await student1.addDojo(dojo);
   // await student2.addDojo(dojo);

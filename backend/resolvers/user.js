@@ -11,7 +11,11 @@ const createToken = async (user, secret, expiresIn) => {
 export default {
   Query: {
     users: (parent, args, { db }) => db.user.findAll(),
-    user: (parent, { id }, { db }) => db.user.findById(id)
+    user: (parent, { id }, { db }) => db.user.findById(id),
+    me: async (parent, args, { db, req }) => {
+      console.log(req.session);
+      return await db.user.findById(req.session.userId);
+    }
   },
   Mutation: {
     signUp: async (
@@ -31,15 +35,20 @@ export default {
         handle: handle
       });
 
-      await user.addDojo(dojo);
-      await dojo.addSensei(user);
+      const profile = await db.profile.create({
+        stripe_id: Math.floor(Math.random() * 100000)
+      });
+      profile.setDojo(dojo);
+      await user.addProfile(profile);
+
+      // await dojo.addSensei(user);
       // await dojo.setUsers(user);
 
       // const d = await db.dojo.findById(1, { include: [db.user] });
 
       return { token: createToken(user, secret, "30m") };
     },
-    signIn: async (parent, { email, password }, { db, secret }) => {
+    signIn: async (parent, { email, password }, { db, req, secret }) => {
       const user = await db.user.findByLogin(email);
 
       if (!user) {
@@ -65,6 +74,8 @@ export default {
       // if (!isSensei) {
       //   throw new UserInputError("No user found with this login credentials.");
       // }
+
+      req.session.userId = user.id;
 
       return { token: createToken(user, secret, "30m") };
     }
