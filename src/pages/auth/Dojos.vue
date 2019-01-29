@@ -22,7 +22,9 @@ export default {
       query: gql`
         query {
           dojos {
+            id
             title
+            country
           }
         }
       `

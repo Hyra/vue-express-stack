@@ -9,8 +9,9 @@ export default {
         const currentUser = await db.user.findById(req.session.userId);
         const profiles = await currentUser.getProfiles();
 
-        const dojos = profiles.map(profile => {
-          return profile.getDojo();
+        const dojos = profiles.map(async profile => {
+          let dojo = await profile.getDojo();
+          return dojo;
         });
 
         return dojos;
