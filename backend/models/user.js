@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.findByLogin = async login => {
     let user = await User.findOne({
-      where: { username: login }
+      where: { email: login }
     });
 
     if (!user) {
@@ -61,7 +61,12 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.associate = models => {
-    User.belongsTo(models.dojo);
+    User.hasMany(models.profile);
+    // User.belongsToMany(models.dojo, { as: "dojos", through: "user_dojos" });
+    // User.belongsToMany(models.profile, {
+    //   as: "profile",
+    //   through: "user_profiles"
+    // });
   };
 
   return User;

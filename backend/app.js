@@ -1,6 +1,8 @@
 require("dotenv").config();
 
 import express from "express";
+import session from "express-session";
+import cors from "cors";
 import path from "path";
 const fallback = require("express-history-api-fallback");
 
@@ -12,6 +14,11 @@ var sassMiddleware = require("node-sass-middleware");
 
 import db from "./models";
 
+const expressSession = require("express-session");
+const SessionStore = require("express-session-sequelize")(expressSession.Store);
+const sequelizeSessionStore = new SessionStore({
+  db: db.sequelize
+});
 // const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 const { ApolloServer } = require("apollo-server-express");
 import jwt from "jsonwebtoken";
@@ -36,6 +43,31 @@ var index = require("./routes/index");
 var users = require("./routes/users");
 
 var app = express();
+// var corsOptions = {
+//   origin: function(req) {
+//     console.log(req);
+//     return req;
+//   }, //"http://localhost:8080/",
+//   credentials: true, // <-- REQUIRED backend setting,
+//   preflightContinue: true
+// };
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions)); // include before other routes
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
+
+app.use(
+  session({
+    secret: "keep it secret, keep it safe.",
+    store: sequelizeSessionStore,
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 import schema from "./schema";
 import resolvers from "./resolvers";
@@ -68,30 +100,100 @@ const apolloServer = new ApolloServer({
       return {
         db,
         me,
+        req,
         secret: process.env.SECRET
       };
     }
   }
 });
-apolloServer.applyMiddleware({ app, path: "/graphql" });
+apolloServer.applyMiddleware({ app, path: "/graphql", cors: false });
 
 app.apolloServer = apolloServer;
 
 db.sequelize.sync({ force: true }).then(async () => {
   // populate author table with dummy data
 
-  const user = await db.user.create({
-    email: `${faker.internet.exampleEmail().toLowerCase()}`,
+  const sensei = await db.user.create({
+    // email: `sensei_${faker.internet.exampleEmail().toLowerCase()}`,
+    email: `sensei@testdojo.nl`,
+    password: "testtest"
+  });
+
+  const student1 = await db.user.create({
+    email: `student1@testdojo.nl`,
+    password: "testtest"
+  });
+
+  const student2 = await db.user.create({
+    email: `student2@testdojo.nl`,
     password: "testtest"
   });
 
   const dojo = await db.dojo.create({
     title: `${faker.hacker.noun()} Dojo`,
     country: "Netherlands",
-    handle: `${faker.hacker.noun()}`
+    handle: `testdojo`
+  });
+  const dojo2 = await db.dojo.create({
+    title: `${faker.hacker.noun()} Dojo`,
+    country: "Belgium",
+    handle: `belgium-dojo`
   });
 
-  await user.setDojo(dojo);
+  // await dojo.addStudent(student1);
+  // await dojo.addStudent(student2);
+
+  const profile = await db.profile.create({
+    stripeId: "123"
+  });
+  await profile.setDojo(dojo);
+  await student1.addProfile(profile);
+
+  const profile2 = await db.profile.create({
+    stripeId: "234"
+  });
+  await profile2.setDojo(dojo);
+  await student2.addProfile(profile2);
+
+  const profile3 = await db.profile.create({
+    stripeId: "456",
+    isSensei: true
+  });
+
+  await profile3.setDojo(dojo);
+  await sensei.addProfile(profile3);
+
+  const profile4 = await db.profile.create({
+    stripeId: "457",
+    isSensei: false
+  });
+  await profile4.setDojo(dojo2);
+  await sensei.addProfile(profile4);
+
+  // await dojo.setSenseis([profile2, profile3]);
+  // await dojo.setStudents([profile]);
+  // console.log(await dojo.getSenseis());
+
+  // await student1.addDojo(dojo);
+  // await student2.addDojo(dojo);
+  // await sensei.addDojo(dojo);
+
+  // const res = await db.dojo.findOne({
+  //   // where: { "senseis.user.email": `sensei@something.nl` },
+  //   include: [
+  //     {
+  //       model: db.user,
+  //       as: "senseis",
+  //       where: { email: "sensei@testdojo.nl" }
+  //     }
+  //   ]
+  // });
+  // console.log(res);
+
+  // const senseis = await dojo.getSenseis();
+  // console.log(senseis.length);
+  // const students = await dojo.getStudents();
+  // console.log(students.length);
   // db.author.bulkCreate(
   //   times(10, () => ({
   //     firstName: faker.name.firstName(),

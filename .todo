@@ -1,1 +1,7 @@
 TODO: Move development db credentials to .env
+
+Auth with cookie instead of JWT
+
+Login and profiles seperate
+
+Backend / Web folders?

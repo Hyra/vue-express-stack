@@ -10,7 +10,7 @@ export default new Router({
     {
       path: "/",
       component: () =>
-        import(/* webpackChunkName: "Public" */ "./layouts/Public.vue"),
+        import(/* webpackChunkName: "public" */ "./layouts/Public.vue"),
       children: [
         {
           path: "",
@@ -54,13 +54,19 @@ export default new Router({
           name: "token-expired",
           component: () =>
             import(/* webpackChunkName: "token-expired" */ "./pages/auth/TokenExpired.vue")
+        },
+        {
+          path: "profiles",
+          name: "profiles",
+          component: () =>
+            import(/* webpackChunkName: "profiles" */ "./pages/auth/Profiles.vue")
         }
       ]
     },
     {
-      path: "/admin",
+      path: "/admin/:dojoSlug",
       component: () =>
-        import(/* webpackChunkName: "Public" */ "./layouts/Admin.vue"),
+        import(/* webpackChunkName: "admin" */ "./layouts/Admin.vue"),
       children: [
         {
           path: "",

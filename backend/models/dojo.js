@@ -33,11 +33,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  //   Dojo.hasOne(User, { foreignKey: "sensei_id" });
-
   Dojo.associate = models => {
-    Dojo.hasMany(models.user);
+    Dojo.hasMany(models.profile);
+    // Dojo.hasMany(models.profile, { as: "Senseis" });
+    // Dojo.hasMany(models.profile, { as: "Students" });
   };
+
+  // Dojo.associate = models => {
+  //   Dojo.belongsToMany(models.user, {
+  //     as: "Students",
+  //     through: "students"
+  //   });
+  //   Dojo.belongsToMany(models.user, {
+  //     as: "Senseis",
+  //     through: "senseis"
+  //   });
+  // };
 
   return Dojo;
 };

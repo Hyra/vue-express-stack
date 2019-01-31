@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueApollo from "vue-apollo";
+// import { createHttpLink } from "apollo-link-http";
 
 // import { BatchHttpLink } from "apollo-link-batch-http";
 // const myLink = new BatchHttpLink({ uri: "http://localhost:3000/graphql" });
@@ -25,6 +26,11 @@ export const filesRoot =
 
 Vue.prototype.$filesRoot = filesRoot;
 
+// const httpLink = createHttpLink({
+//   uri: "http://localhost:3000/graphql/",
+//   credentials: "include"
+// });
+
 // Config
 const defaultOptions = {
   // You can use `https` for secure connection (recommended in production)
@@ -40,12 +46,17 @@ const defaultOptions = {
   // You need to pass a `wsEndpoint` for this to work
   websocketsOnly: false,
   // Is being rendered on the server?
-  ssr: false
+  ssr: false,
 
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the
   // httpLinkOptions property of defaultOptions.
   // link: myLink
+
+  httpLinkOptions: {
+    uri: "http://localhost:3000/graphql",
+    credentials: "include"
+  }
 
   // Override default cache
   // cache: myCache
@@ -65,7 +76,8 @@ export function createProvider(options = {}) {
   // Create apollo client
   const { apolloClient, wsClient } = createApolloClient({
     ...defaultOptions,
-    ...options
+    ...options,
+    credentials: "include"
   });
   apolloClient.wsClient = wsClient;
 
