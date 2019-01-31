@@ -54,7 +54,7 @@ export default {
         .then(data => {
           // localStorage.setItem("apollo-token", data.data.signIn.token);
           console.log(data);
-          location.href = `/dojos`;
+          location.href = `/profiles`;
         })
         .catch(() => {
           this.errors = {

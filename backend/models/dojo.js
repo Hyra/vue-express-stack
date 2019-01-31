@@ -34,11 +34,19 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   // Dojo.associate = models => {
-  // Dojo.belongsToMany(models.user, {
-  //   as: "students",
-  //   through: "dojo_students"
-  // });
-  // Dojo.belongsToMany(models.user, { as: "senseis", through: "dojo_senseis" });
+  // Dojo.hasMany(models.profile, { as: "Senseis" });
+  // Dojo.hasMany(models.profile, { as: "Students" });
+  // };
+
+  // Dojo.associate = models => {
+  //   Dojo.belongsToMany(models.user, {
+  //     as: "Students",
+  //     through: "students"
+  //   });
+  //   Dojo.belongsToMany(models.user, {
+  //     as: "Senseis",
+  //     through: "senseis"
+  //   });
   // };
 
   return Dojo;

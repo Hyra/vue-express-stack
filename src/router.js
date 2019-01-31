@@ -56,15 +56,15 @@ export default new Router({
             import(/* webpackChunkName: "token-expired" */ "./pages/auth/TokenExpired.vue")
         },
         {
-          path: "dojos",
-          name: "dojos",
+          path: "profiles",
+          name: "profiles",
           component: () =>
-            import(/* webpackChunkName: "token-expired" */ "./pages/auth/Dojos.vue")
+            import(/* webpackChunkName: "profiles" */ "./pages/auth/Profiles.vue")
         }
       ]
     },
     {
-      path: "/admin",
+      path: "/admin/:dojoSlug",
       component: () =>
         import(/* webpackChunkName: "admin" */ "./layouts/Admin.vue"),
       children: [

@@ -2,12 +2,16 @@ module.exports = (sequelize, DataTypes) => {
   const Profile = sequelize.define(
     "profile",
     {
-      stripe_id: {
+      stripeId: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: true
         }
+      },
+      isSensei: {
+        type: DataTypes.BOOLEAN,
+        default: false
       }
     },
     {

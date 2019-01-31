@@ -36,7 +36,7 @@ export default {
       });
 
       const profile = await db.profile.create({
-        stripe_id: Math.floor(Math.random() * 100000)
+        stripeId: Math.floor(Math.random() * 100000)
       });
       profile.setDojo(dojo);
       await user.addProfile(profile);

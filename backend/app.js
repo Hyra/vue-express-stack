@@ -134,28 +134,45 @@ db.sequelize.sync({ force: true }).then(async () => {
     country: "Netherlands",
     handle: `testdojo`
   });
+  const dojo2 = await db.dojo.create({
+    title: `${faker.hacker.noun()} Dojo`,
+    country: "Belgium",
+    handle: `belgium-dojo`
+  });
 
   // await dojo.addStudent(student1);
   // await dojo.addStudent(student2);
-  // await dojo.addSensei(sensei);
 
   const profile = await db.profile.create({
-    stripe_id: "123"
+    stripeId: "123"
   });
   await profile.setDojo(dojo);
   await student1.addProfile(profile);
 
   const profile2 = await db.profile.create({
-    stripe_id: "234"
+    stripeId: "234"
   });
   await profile2.setDojo(dojo);
   await student2.addProfile(profile2);
 
   const profile3 = await db.profile.create({
-    stripe_id: "456"
+    stripeId: "456",
+    isSensei: true
   });
+
   await profile3.setDojo(dojo);
-  await sensei.addProfile(profile);
+  await sensei.addProfile(profile3);
+
+  const profile4 = await db.profile.create({
+    stripeId: "457",
+    isSensei: false
+  });
+  await profile4.setDojo(dojo2);
+  await sensei.addProfile(profile4);
+
+  // await dojo.setSenseis([profile2, profile3]);
+  // await dojo.setStudents([profile]);
+  // console.log(await dojo.getSenseis());
 
   // await student1.addDojo(dojo);
   // await student2.addDojo(dojo);
