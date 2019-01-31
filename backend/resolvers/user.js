@@ -21,7 +21,7 @@ export default {
     signUp: async (
       parent,
       { country, title, handle, email, password },
-      { db, secret }
+      { db, req, secret }
     ) => {
       // if (password.length < 10) {
       //   throw new UserInputError("Password too short");
@@ -36,9 +36,11 @@ export default {
       });
 
       const profile = await db.profile.create({
-        stripeId: Math.floor(Math.random() * 100000)
+        stripeId: Math.floor(Math.random() * 100000),
+        isSensei: true
       });
-      profile.setDojo(dojo);
+
+      await profile.setDojo(dojo);
       await user.addProfile(profile);
 
       // await dojo.addSensei(user);
@@ -46,6 +48,7 @@ export default {
 
       // const d = await db.dojo.findById(1, { include: [db.user] });
 
+      req.session.userId = user.id;
       return { token: createToken(user, secret, "30m") };
     },
     signIn: async (parent, { email, password }, { db, req, secret }) => {

@@ -14,7 +14,6 @@ export default {
             }
           ]
         });
-        console.log(profiles);
         // const dojos = profiles.map(async profile => {
         //   let dojo = await profile.getDojo();
         //   return dojo;

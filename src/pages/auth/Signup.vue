@@ -13,9 +13,7 @@
 
       <el-form-item label="Dojo URL">
         <el-input placeholder="" v-model="handle" @input="checkHandle">
-          <template slot="prepend"
-            >https://dojokeep.com/</template
-          >
+          <template slot="prepend"></template>
           <i
             class="el-input__icon"
             :class="
@@ -147,10 +145,12 @@ export default {
             password: this.password
           }
         })
-        .then(data => {
-          console.log("setting token");
-          localStorage.setItem("apollo-token", data.data.signUp.token);
-          location.href = `/${this.handle}/`;
+        .then(() => {
+          // console.log("setting token");
+          // localStorage.setItem("apollo-token", data.data.signUp.token);
+          // location.href = `/${this.handle}/`;
+
+          location.href = `/profiles`;
         })
         .catch(error => {
           console.log("error", error.graphQLErrors);

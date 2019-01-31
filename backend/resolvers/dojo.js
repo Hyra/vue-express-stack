@@ -27,6 +27,18 @@ export default {
         return { available: false };
       }
       return { available: true };
+    },
+    // TODO: get dojoId from something else? At least check if we have access
+    getStudents: async (parent, { dojoId }, { db }) => {
+      const dojo = await db.dojo.findById(dojoId);
+      const profiles = await dojo.getProfiles({
+        include: [
+          {
+            model: db.user
+          }
+        ]
+      });
+      return profiles;
     }
   }
 };

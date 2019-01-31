@@ -33,10 +33,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // Dojo.associate = models => {
-  // Dojo.hasMany(models.profile, { as: "Senseis" });
-  // Dojo.hasMany(models.profile, { as: "Students" });
-  // };
+  Dojo.associate = models => {
+    Dojo.hasMany(models.profile);
+    // Dojo.hasMany(models.profile, { as: "Senseis" });
+    // Dojo.hasMany(models.profile, { as: "Students" });
+  };
 
   // Dojo.associate = models => {
   //   Dojo.belongsToMany(models.user, {

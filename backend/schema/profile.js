@@ -6,6 +6,7 @@ export default gql`
     stripeId: String
     isSensei: Boolean
     dojo: Dojo!
+    user: User!
   }
 
   extend type Query {
