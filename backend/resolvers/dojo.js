@@ -28,8 +28,8 @@ export default {
       }
       return { available: true };
     },
-    // TODO: get dojoId from something else? At least check if we have access
     getStudents: async (parent, { dojoId }, { db }) => {
+      // TODO: Check if we have permission for this dojo (isSensei of dojo)
       const dojo = await db.dojo.findById(dojoId);
       const profiles = await dojo.getProfiles({
         include: [
