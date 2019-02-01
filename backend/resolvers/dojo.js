@@ -1,5 +1,6 @@
 import { combineResolvers } from "graphql-resolvers";
 // import { isAuthenticated } from "./authorization";
+import { ForbiddenError } from "apollo-server-express";
 
 export default {
   Query: {
@@ -28,7 +29,7 @@ export default {
       }
       return { available: true };
     },
-    getStudents: async (parent, { dojoSlug }, { db }) => {
+    getStudents: async (parent, { dojoSlug }, { db, req }) => {
       // TODO: Check if we have permission for this dojo (isSensei of dojo)
       const dojo = await db.dojo.find({
         where: {
@@ -42,7 +43,17 @@ export default {
           }
         ]
       });
-      return profiles;
+      // Check if we have permission to this dojo
+      const userId = req.session.userId;
+      const isSenseiOfDojo = profiles.filter(profile => {
+        console.log(profile.user.id, "vs", userId, "and", profile.isSensei);
+        return profile.user.id === userId && profile.isSensei;
+      });
+      if (isSenseiOfDojo.length) {
+        return profiles;
+      } else {
+        throw new ForbiddenError("No access");
+      }
     }
   }
 };

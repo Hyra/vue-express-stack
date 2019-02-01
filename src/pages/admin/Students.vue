@@ -28,6 +28,13 @@ export default {
         return {
           dojoSlug: this.$route.params.dojoSlug
         };
+      },
+      error(error) {
+        if (error.message.indexOf("No access") > -1) {
+          this.$router.push({
+            name: "login"
+          });
+        }
       }
     }
   }
