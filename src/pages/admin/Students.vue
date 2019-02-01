@@ -1,7 +1,9 @@
 <template>
   <div class="students">
     <h1>Students</h1>
-    <pre>{{ students }}</pre>
+    <ul>
+      <li v-for="student in students" :key="student.id">{{ student }}</li>
+    </ul>
   </div>
 </template>
 
