@@ -2,7 +2,13 @@
   <div class="students">
     <h1>Students</h1>
     <ul>
-      <li v-for="student in students" :key="student.id">{{ student }}</li>
+      <li v-for="student in students" :key="student.id">
+        <router-link
+          :to="{ name: 'student', params: { studentId: student.id } }"
+          >Load student</router-link
+        >
+        {{ student }}
+      </li>
     </ul>
   </div>
 </template>
@@ -19,6 +25,7 @@ export default {
           students: getStudents(dojoSlug: $dojoSlug) {
             id
             stripeId
+            isSensei
             user {
               id
               email
