@@ -28,9 +28,13 @@ export default {
       }
       return { available: true };
     },
-    getStudents: async (parent, { dojoId }, { db }) => {
+    getStudents: async (parent, { dojoSlug }, { db }) => {
       // TODO: Check if we have permission for this dojo (isSensei of dojo)
-      const dojo = await db.dojo.findById(dojoId);
+      const dojo = await db.dojo.find({
+        where: {
+          handle: dojoSlug
+        }
+      });
       const profiles = await dojo.getProfiles({
         include: [
           {
