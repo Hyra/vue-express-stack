@@ -1,5 +1,6 @@
 import { combineResolvers } from "graphql-resolvers";
 // import { isAuthenticated } from "./authorization";
+import { isSenseiOfDojo } from "./authorization";
 
 export default {
   Query: {
@@ -28,17 +29,24 @@ export default {
       }
       return { available: true };
     },
-    getStudents: async (parent, { dojoId }, { db }) => {
-      // TODO: Check if we have permission for this dojo (isSensei of dojo)
-      const dojo = await db.dojo.findById(dojoId);
-      const profiles = await dojo.getProfiles({
-        include: [
-          {
-            model: db.user
+    getStudents: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug }, { db }) => {
+        const dojo = await db.dojo.find({
+          where: {
+            handle: dojoSlug
           }
-        ]
-      });
-      return profiles;
-    }
+        });
+        const profiles = await dojo.getProfiles({
+          include: [
+            {
+              model: db.user
+            }
+          ]
+        });
+
+        return profiles;
+      }
+    )
   }
 };

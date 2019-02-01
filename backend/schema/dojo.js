@@ -11,7 +11,7 @@ export default gql`
   extend type Query {
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
-    getStudents(dojoId: Int!): [Profile!]!
+    getStudents(dojoSlug: String!): [Profile!]!
   }
 
   type Availability {
