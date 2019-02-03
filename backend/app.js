@@ -24,6 +24,13 @@ const { ApolloServer } = require("apollo-server-express");
 import jwt from "jsonwebtoken";
 
 const getMe = async req => {
+  // Could put dojoslug in request here, and check if we have permission
+  if (req.body.operationName) {
+    console.log(
+      "req.body.operationName.variables",
+      req.body.variables.dojoSlug
+    );
+  }
   const token = req.headers["authorization"];
   if (token) {
     try {
@@ -35,7 +42,7 @@ const getMe = async req => {
   }
 };
 
-import faker from "faker";
+// import faker from "faker";
 // import times from "lodash.times";
 // import random from "lodash.random";
 
@@ -110,6 +117,7 @@ apolloServer.applyMiddleware({ app, path: "/graphql", cors: false });
 
 app.apolloServer = apolloServer;
 
+/*
 db.sequelize.sync({ force: true }).then(async () => {
   // populate author table with dummy data
 
@@ -209,6 +217,7 @@ db.sequelize.sync({ force: true }).then(async () => {
   //   }))
   // );
 });
+*/
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

@@ -11,7 +11,16 @@ export default gql`
   extend type Query {
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
-    getStudents(dojoSlug: String!): [Profile!]!
+    getStudents(dojoSlug: String!): [Profile]!
+  }
+
+  extend type Mutation {
+    newStudent(
+      dojoSlug: String!
+      email: String!
+      firstname: String!
+      lastname: String!
+    ): Profile!
   }
 
   type Availability {

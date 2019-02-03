@@ -81,16 +81,16 @@ export default new Router({
             import(/* webpackChunkName: "students" */ "./pages/admin/Students.vue")
         },
         {
-          path: "students/:studentId",
-          name: "student",
-          component: () =>
-            import(/* webpackChunkName: "student" */ "./pages/admin/Student.vue")
-        },
-        {
           path: "students/new",
           name: "student-new",
           component: () =>
             import(/* webpackChunkName: "student-new" */ "./pages/admin/StudentNew.vue")
+        },
+        {
+          path: "students/:studentId",
+          name: "student",
+          component: () =>
+            import(/* webpackChunkName: "student" */ "./pages/admin/Student.vue")
         },
         {
           path: "billing/invoices",
