@@ -16,6 +16,9 @@ export default gql`
       password: String!
     ): Token!
     signIn(email: String!, password: String!): Token!
+    forgotPassword(email: String!): Boolean!
+    validateResetPasswordToken(userId: Int!, token: String!): Boolean!
+    resetPassword(userId: Int!, token: String!, newPassword: String!): Boolean!
   }
 
   type Token {
