@@ -113,7 +113,10 @@ const apolloServer = new ApolloServer({
     }
   }
 });
-apolloServer.applyMiddleware({ app, path: "/graphql", cors: false });
+
+if (process.env.NODE_ENV !== "production") {
+  apolloServer.applyMiddleware({ app, path: "/graphql", cors: false });
+}
 
 app.apolloServer = apolloServer;
 

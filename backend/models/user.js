@@ -22,14 +22,22 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true,
           len: {
-            args: [7, 42],
-            msg: "Password must be between 7 and 42 karakters."
+            args: [7, 142],
+            msg: "Password must be between 7 and 142 karakters."
           }
         }
       }
     },
     {
-      freezeTableName: true
+      freezeTableName: true,
+      defaultScope: {
+        attributes: { exclude: ["password"] }
+      },
+      scopes: {
+        withPassword: {
+          attributes: {}
+        }
+      }
     }
   );
 
@@ -49,6 +57,13 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeCreate(async user => {
     user.password = await user.generatePasswordHash();
+  });
+
+  User.beforeUpdate(async user => {
+    if (user.changed("password")) {
+      user.password = await user.generatePasswordHash();
+      console.log(user.password);
+    }
   });
 
   User.prototype.generatePasswordHash = async function() {

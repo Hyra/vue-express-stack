@@ -52,8 +52,9 @@ export default {
       return { token: createToken(user, secret, "30m") };
     },
     signIn: async (parent, { email, password }, { db, req, secret }) => {
-      const user = await db.user.findByLogin(email);
-
+      const user = await db.user
+        .scope("withPassword")
+        .findOne({ where: { email } });
       if (!user) {
         throw new UserInputError("No user found with this login credentials.");
       }
@@ -81,6 +82,72 @@ export default {
       req.session.userId = user.id;
 
       return { token: createToken(user, secret, "30m") };
+    },
+    forgotPassword: async (parent, { email }, { db }) => {
+      const user = await db.user.scope("withPassword").findOne({
+        where: { email }
+      });
+      if (user) {
+        const payload = {
+          id: user.id,
+          email
+        };
+        const secret = user.password + "-" + new Date(user.updatedAt).getTime();
+        const token = require("jsonwebtoken").sign(payload, secret);
+        console.log(`/reset-password/${user.id}/${token}`);
+      }
+      return true;
+    },
+    validateResetPasswordToken: async (parent, { userId, token }, { db }) => {
+      const user = await db.user.scope("withPassword").findOne({
+        where: { id: userId }
+      });
+      if (user) {
+        var secret = user.password + "-" + new Date(user.updatedAt).getTime();
+        const verify = await require("jsonwebtoken").verify(
+          token,
+          secret,
+          err => {
+            // (err, decoded)
+            if (err) {
+              return false;
+            } else {
+              // res.redirect(`/reset-password/${decoded.id}/${req.params.token}`);
+              return true;
+            }
+          }
+        );
+        return verify;
+      }
+    },
+    resetPassword: async (parent, { userId, token, newPassword }, { db }) => {
+      const user = await db.user.scope("withPassword").findOne({
+        where: { id: userId }
+      });
+      if (user) {
+        var secret = user.password + "-" + new Date(user.updatedAt).getTime();
+        const verified = await require("jsonwebtoken").verify(
+          token,
+          secret,
+          err => {
+            // (err, decoded)
+            if (err) {
+              return false;
+            } else {
+              // res.redirect(`/reset-password/${decoded.id}/${req.params.token}`);
+              return true;
+            }
+          }
+        );
+        if (verified) {
+          // Reset the password
+          user.password = newPassword;
+          await user.save();
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   }
 };

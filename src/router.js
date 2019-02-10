@@ -44,7 +44,7 @@ export default new Router({
             import(/* webpackChunkName: "forgot-password" */ "./pages/auth/ForgotPassword.vue")
         },
         {
-          path: "reset-password",
+          path: "reset-password/:userId/:token",
           name: "reset-password",
           component: () =>
             import(/* webpackChunkName: "reset-password" */ "./pages/auth/ResetPassword.vue")
