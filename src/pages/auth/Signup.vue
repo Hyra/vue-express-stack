@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       errors: { message: "" },
-      country: "Netherlands",
+      country: "NL",
       title: `${faker.hacker.noun()} Dojo`,
       handle: `${faker.hacker.noun()}`,
       email: faker.internet.exampleEmail().toLowerCase(),

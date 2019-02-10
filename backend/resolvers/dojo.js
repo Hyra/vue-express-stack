@@ -1,6 +1,9 @@
 import { combineResolvers } from "graphql-resolvers";
 // import { isAuthenticated } from "./authorization";
 import { isSenseiOfDojo } from "./authorization";
+import Stripe from "stripe";
+
+const stripe = Stripe("sk_test_HjMDt0IGY1gapAtwisALNOuf");
 
 export default {
   Query: {
@@ -82,8 +85,19 @@ export default {
             return userCheck.profiles[0];
           } else {
             // Need to create a profile for the found user
+
+            const stripeCustomer = await stripe.customers.create(
+              {
+                email: email
+              },
+              {
+                stripe_account: dojo.stripeId
+              }
+            );
             const profile = await db.profile.create({
-              stripeId: 616
+              stripeId: stripeCustomer.id,
+              firstname,
+              lastname
             });
             await profile.setDojo(dojo);
             await userCheck.addProfile(profile);
@@ -95,8 +109,18 @@ export default {
             email,
             password: "qwaszxqwaszx"
           });
+
+          const stripeCustomer = await stripe.customers.create(
+            {
+              email: email
+            },
+            {
+              stripe_account: dojo.stripeId
+            }
+          );
+
           const profile = await db.profile.create({
-            stripeId: 616,
+            stripeId: stripeCustomer.id,
             firstname,
             lastname
           });
