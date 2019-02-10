@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
+import Stripe from "stripe";
 import { AuthenticationError, UserInputError } from "apollo-server-express";
+
+const stripe = Stripe("sk_test_HjMDt0IGY1gapAtwisALNOuf");
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username } = user;
@@ -29,14 +32,39 @@ export default {
 
       const user = await db.user.create({ email: email, password: password });
 
+      const stripeAccount = await stripe.accounts.create({
+        country: country,
+        type: "custom",
+        email: email,
+        business_name: title,
+        legal_entity: {
+          type: "company",
+          business_name: title
+        },
+        tos_acceptance: {
+          date: Math.floor(Date.now() / 1000),
+          ip: req.connection.remoteAddress // Assumes you're not using a proxy
+        }
+      });
+
+      const stripeCustomer = await stripe.customers.create(
+        {
+          email: email
+        },
+        {
+          stripe_account: stripeAccount.id
+        }
+      );
+
       const dojo = await db.dojo.create({
         title: title,
         country: country,
-        handle: handle
+        handle: handle,
+        stripeId: stripeAccount.id
       });
 
       const profile = await db.profile.create({
-        stripeId: Math.floor(Math.random() * 100000),
+        stripeId: stripeCustomer.id,
         isSensei: true
       });
 
