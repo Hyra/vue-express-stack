@@ -12,7 +12,7 @@
         <el-input placeholder="Please input" v-model="lastname"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addStudent">Login</el-button>
+        <el-button type="primary" @click="addStudent">Add student</el-button>
       </el-form-item>
     </el-form>
   </div>
