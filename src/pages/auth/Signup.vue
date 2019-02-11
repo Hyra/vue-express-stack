@@ -4,22 +4,22 @@
 
     <el-form ref="verificationForm" label-width="120px">
       <el-form-item label="Dojo e-mail">
-        <el-input placeholder="Please input" v-model="email"></el-input>
+        <el-input v-model="email" placeholder="Please input"></el-input>
       </el-form-item>
 
       <el-form-item label="Dojo name">
-        <el-input placeholder="Please input" v-model="title"></el-input>
+        <el-input v-model="title" placeholder="Please input"></el-input>
       </el-form-item>
 
       <el-form-item label="Dojo URL">
-        <el-input placeholder="" v-model="handle" @input="checkHandle">
+        <el-input v-model="handle" placeholder="" @input="checkHandle">
           <template slot="prepend"></template>
           <i
+            slot="suffix"
             class="el-input__icon"
             :class="
               handleAvailable ? 'el-icon-check good' : 'el-icon-error error'
             "
-            slot="suffix"
           >
           </i>
         </el-input>
@@ -55,9 +55,9 @@
 
       <el-form-item label="Password">
         <el-input
+          v-model="password"
           placeholder="Please input"
           type="password"
-          v-model="password"
         ></el-input>
       </el-form-item>
 
@@ -76,7 +76,7 @@ import gql from "graphql-tag";
 import faker from "faker";
 
 export default {
-  name: "signup",
+  name: "Signup",
   data() {
     return {
       errors: { message: "" },

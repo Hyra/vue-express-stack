@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "balance-overview"
+  name: "BalanceOverview"
 };
 </script>

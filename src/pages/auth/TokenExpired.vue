@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "token-expired"
+  name: "TokenExpired"
 };
 </script>

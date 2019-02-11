@@ -4,7 +4,7 @@
 
     <el-form ref="resetPasswordForm" label-width="120px">
       <el-form-item label="New password">
-        <el-input placeholder="Please input" v-model="newPassword"></el-input>
+        <el-input v-model="newPassword" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="resetPassword"
@@ -19,7 +19,7 @@
 import gql from "graphql-tag";
 
 export default {
-  name: "reset-password",
+  name: "ResetPassword",
   data() {
     return {
       newPassword: ""

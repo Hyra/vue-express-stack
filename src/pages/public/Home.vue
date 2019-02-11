@@ -82,7 +82,7 @@
 
 <script>
 export default {
-  name: "home",
+  name: "Home",
 
   apollo: {
     // files: FILES,

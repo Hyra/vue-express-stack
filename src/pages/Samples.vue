@@ -10,7 +10,7 @@ import SampleApi from "@/components/SampleApi.vue";
 import SampleSocket from "@/components/SampleSocket.vue";
 
 export default {
-  name: "samples",
+  name: "Samples",
   components: {
     SampleApi,
     SampleSocket

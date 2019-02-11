@@ -17,7 +17,7 @@
 import gql from "graphql-tag";
 
 export default {
-  name: "students",
+  name: "Students",
   apollo: {
     students: {
       query: gql`

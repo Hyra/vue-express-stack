@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "payment-settings"
+  name: "PaymentSettings"
 };
 </script>

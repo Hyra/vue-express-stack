@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "balance-payouts"
+  name: "BalancePayouts"
 };
 </script>

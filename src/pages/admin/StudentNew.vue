@@ -3,13 +3,13 @@
     <h1>New Student</h1>
     <el-form ref="verificationForm" label-width="120px">
       <el-form-item label="E-mail">
-        <el-input placeholder="Please input" v-model="email"></el-input>
+        <el-input v-model="email" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item label="Firstname">
-        <el-input placeholder="Please input" v-model="firstname"></el-input>
+        <el-input v-model="firstname" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item label="Lastname">
-        <el-input placeholder="Please input" v-model="lastname"></el-input>
+        <el-input v-model="lastname" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="addStudent">Add student</el-button>
@@ -22,7 +22,7 @@
 import gql from "graphql-tag";
 
 export default {
-  name: "students-new",
+  name: "StudentsNew",
   data() {
     return {
       email: "a",

@@ -4,13 +4,13 @@
 
     <el-form ref="verificationForm" label-width="120px">
       <el-form-item label="E-mail">
-        <el-input placeholder="Please input" v-model="email"></el-input>
+        <el-input v-model="email" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item label="Password">
         <el-input
+          v-model="password"
           placeholder="Please input"
           type="password"
-          v-model="password"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -25,7 +25,7 @@
 import gql from "graphql-tag";
 
 export default {
-  name: "login",
+  name: "Login",
   data() {
     return {
       email: "sensei@testdojo.nl",

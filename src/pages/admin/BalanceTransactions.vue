@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "balance-transactions"
+  name: "BalanceTransactions"
 };
 </script>

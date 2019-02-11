@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "contribution-plans"
+  name: "ContributionPlans"
 };
 </script>

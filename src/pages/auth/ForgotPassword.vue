@@ -2,9 +2,9 @@
   <div>
     <h1>Forgot password</h1>
 
-    <el-form ref="forgotPasswordForm" label-width="120px" v-if="!requested">
+    <el-form v-if="!requested" ref="forgotPasswordForm" label-width="120px">
       <el-form-item label="E-mail">
-        <el-input placeholder="Please input" v-model="email"></el-input>
+        <el-input v-model="email" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="requestPasswordlink"
@@ -24,7 +24,7 @@
 import gql from "graphql-tag";
 
 export default {
-  name: "forgot-password",
+  name: "ForgotPassword",
   data() {
     return {
       requested: false,

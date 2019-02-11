@@ -73,6 +73,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "eslint-plugin-graphql": "^3.0.3",
     "graphql-tag": "^2.10.1",
     "lint-staged": "^8.1.0",
     "node-sass": "^4.9.0",
@@ -86,11 +87,16 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/recommended",
       "@vue/prettier"
     ],
     "rules": {
-      "no-console": 0
+      "no-console": "off",
+      "vue/no-unused-components": "off",
+      "import/no-unresolved": "off",
+      "vue/require-default-prop": "off",
+      "vue/no-template-shadow": "off",
+      "vue/no-v-html": "off"
     },
     "parserOptions": {
       "parser": "babel-eslint"
