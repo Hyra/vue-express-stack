@@ -17,7 +17,6 @@ export default gql`
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
     getStudents(dojoSlug: String!): [Profile]!
-    getDisciplines(dojoSlug: String!): [Discipline]!
     getPlans(dojoSlug: String!): [Plan]!
   }
 
