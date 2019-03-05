@@ -10,7 +10,6 @@
         class="input"
       />
     </div>
-
     <!-- Apollo watched Graphql query -->
     <ApolloQuery
       :query="require('../graphql/HelloWorld.gql')"
