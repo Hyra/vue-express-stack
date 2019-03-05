@@ -50,6 +50,25 @@ export default {
 
         return profiles;
       }
+    ),
+    getPlans: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug }, { db }) => {
+        const dojo = await db.dojo.find({
+          where: {
+            handle: dojoSlug
+          }
+        });
+        // const billingProducts = await stripe.products
+        const billingProducts = await stripe.plans.list(
+          {},
+          {
+            stripe_account: dojo.stripeId
+          }
+        );
+
+        return billingProducts.data;
+      }
     )
   },
 

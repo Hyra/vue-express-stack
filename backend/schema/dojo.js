@@ -8,10 +8,17 @@ export default gql`
     country: String!
   }
 
+  type Plan {
+    id: ID!
+    nickname: String
+  }
+
   extend type Query {
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
     getStudents(dojoSlug: String!): [Profile]!
+    getDisciplines(dojoSlug: String!): [Discipline]!
+    getPlans(dojoSlug: String!): [Plan]!
   }
 
   extend type Mutation {
