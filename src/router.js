@@ -64,7 +64,7 @@ export default new Router({
       ]
     },
     {
-      path: "/admin/:dojoSlug",
+      path: "/:dojoSlug/admin",
       component: () =>
         import(/* webpackChunkName: "admin" */ "./layouts/Admin.vue"),
       children: [
