@@ -12,7 +12,12 @@
         <el-input v-model="lastname" placeholder="Please input"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addStudent">Add student</el-button>
+        <el-button
+          v-loading="this.$apollo.loading"
+          type="primary"
+          @click="addStudent"
+          >Add student</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -57,10 +62,14 @@ export default {
           firstname: this.firstname,
           lastname: this.lastname
         },
-        update: (store, { data: { newStudent } }) => {
-          console.log(store);
-          console.log(newStudent);
-          this.$emit("myEvent");
+        update: () => {
+          this.$router.push({
+            name: "students",
+            dojoSlug: this.$route.params.dojoSlug
+          });
+          // console.log(store);
+          // console.log(newStudent);
+          // this.$emit("myEvent");
         }
       });
     }
