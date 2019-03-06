@@ -13,10 +13,12 @@ export default {
         const currentUser = await db.user.findById(req.session.userId);
         const profiles = await currentUser.getProfiles();
 
-        const dojos = profiles.map(async profile => {
-          let dojo = await profile.getDojo();
-          return dojo;
-        });
+        const dojos = await Promise.all(
+          profiles.map(async profile => {
+            let dojo = await profile.getDojo();
+            return dojo;
+          })
+        );
 
         return dojos;
       }
@@ -49,6 +51,39 @@ export default {
         });
 
         return profiles;
+      }
+    ),
+    getBillingProducts: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug }, { db }) => {
+        const dojo = await db.dojo.find({
+          where: {
+            handle: dojoSlug
+          }
+        });
+
+        const billingProducts = await stripe.products.list(
+          { type: "service" },
+          {
+            stripe_account: dojo.stripeId
+          }
+        );
+
+        await Promise.all(
+          billingProducts.data.map(async billingProduct => {
+            const plan = await stripe.plans.list(
+              {
+                product: billingProduct.id
+              },
+              {
+                stripe_account: dojo.stripeId
+              }
+            );
+            billingProduct.plans = plan.data;
+          })
+        );
+
+        return billingProducts.data;
       }
     ),
     getPlans: combineResolvers(
