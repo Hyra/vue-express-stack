@@ -59,6 +59,7 @@ export default {
       const dojo = await db.dojo.create({
         title: title,
         country: country,
+        currency: stripeAccount.default_currency,
         handle: handle,
         stripeId: stripeAccount.id
       });

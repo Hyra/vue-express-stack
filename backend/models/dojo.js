@@ -27,6 +27,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true
         }
       },
+      currency: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
       stripeId: {
         type: DataTypes.STRING,
         unique: {
