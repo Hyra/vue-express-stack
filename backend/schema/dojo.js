@@ -23,6 +23,11 @@ export default gql`
     currency: String
   }
 
+  type BoolMessage {
+    result: Boolean
+    message: String
+  }
+
   extend type Query {
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
@@ -47,6 +52,8 @@ export default gql`
       interval_count: Int!
       amount: String!
     ): Plan!
+    deletePlan(dojoSlug: String!, plan: String!): BoolMessage!
+    deleteBillingProduct(dojoSlug: String!, product: String!): BoolMessage!
   }
 
   type Availability {

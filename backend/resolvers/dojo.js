@@ -229,6 +229,52 @@ export default {
 
         return billingProduct;
       }
+    ),
+    deleteBillingProduct: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, product }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.products.del(product, {
+            stripe_account: dojo.stripeId
+          });
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Product succesfully deleted"
+        };
+      }
+    ),
+    deletePlan: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, plan }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.plans.del(plan, {
+            stripe_account: dojo.stripeId
+          });
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Plan succesfully deleted"
+        };
+      }
     )
   }
 };
