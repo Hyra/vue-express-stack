@@ -202,6 +202,33 @@ export default {
 
         return billingProduct;
       }
+    ),
+    newPlan: combineResolvers(
+      isSenseiOfDojo,
+      async (
+        parent,
+        { dojoSlug, product, nickname, interval, interval_count, amount },
+        { db }
+      ) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const billingProduct = await stripe.plans.create(
+          {
+            nickname: nickname,
+            amount: amount,
+            interval: interval,
+            interval_count: interval_count,
+            product: product,
+            currency: dojo.currency
+          },
+          {
+            stripe_account: dojo.stripeId
+          }
+        );
+
+        return billingProduct;
+      }
     )
   }
 };

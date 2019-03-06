@@ -39,6 +39,14 @@ export default gql`
       lastname: String!
     ): Profile!
     newBillingProduct(dojoSlug: String!, name: String!): BillingProduct!
+    newPlan(
+      dojoSlug: String!
+      product: String!
+      nickname: String!
+      interval: String!
+      interval_count: Int!
+      amount: String!
+    ): Plan!
   }
 
   type Availability {
