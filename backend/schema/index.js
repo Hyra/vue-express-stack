@@ -13,9 +13,9 @@ const linkSchema = gql`
     _: Boolean
   }
 
-  type Subscription {
-    _: Boolean
-  }
+  # type Subscription {
+  #   _: Boolean
+  # }
 `;
 
 export default [linkSchema, userSchema, dojoSchema, profileSchema];

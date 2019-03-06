@@ -104,6 +104,24 @@ export default {
 
         return billingProducts.data;
       }
+    ),
+    listStudentSubscriptions: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, student }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const subscriptions = await stripe.subscriptions.list(
+          {
+            customer: student
+          },
+          {
+            stripe_account: dojo.stripeId
+          }
+        );
+
+        return subscriptions.data;
+      }
     )
   },
 

@@ -28,12 +28,21 @@ export default gql`
     message: String
   }
 
+  type Subscription {
+    id: ID!
+    created: String
+  }
+
   extend type Query {
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
     getStudents(dojoSlug: String!): [Profile]!
     getBillingProducts(dojoSlug: String!): [BillingProduct]!
     getPlans(dojoSlug: String!): [Plan]!
+    listStudentSubscriptions(
+      dojoSlug: String!
+      student: String!
+    ): [Subscription]!
   }
 
   extend type Mutation {

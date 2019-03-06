@@ -19,3 +19,17 @@ mutation addProduct($dojoSlug: String!) {
     name
   }
 }
+
+mutation deleteProduct {
+  deleteBillingProduct(dojoSlug: "firewall", product: "prod_EeFw0bazDHQGLm") {
+    result
+    message
+  }
+}
+
+mutation deletePlan {
+  deletePlan(dojoSlug: "firewall", plan: "plan_EeFxXZcdtb7Us9") {
+    result
+    message
+  }
+}
