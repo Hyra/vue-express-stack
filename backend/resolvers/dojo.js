@@ -183,6 +183,25 @@ export default {
           return profile;
         }
       }
+    ),
+    newBillingProduct: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, name }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const billingProduct = await stripe.products.create(
+          {
+            name: name,
+            type: "service"
+          },
+          {
+            stripe_account: dojo.stripeId
+          }
+        );
+
+        return billingProduct;
+      }
     )
   }
 };

@@ -38,6 +38,7 @@ export default gql`
       firstname: String!
       lastname: String!
     ): Profile!
+    newBillingProduct(dojoSlug: String!, name: String!): BillingProduct!
   }
 
   type Availability {
