@@ -1,0 +1,21 @@
+query getBillingProducts($dojoSlug: String!) {
+  products: getBillingProducts(dojoSlug: $dojoSlug) {
+    id
+    name
+    plans {
+      id
+      nickname
+      interval
+      interval_count
+      amount
+      currency
+    }
+  }
+}
+
+mutation addProduct($dojoSlug: String!) {
+  newBillingProduct(dojoSlug: $dojoSlug, name: "Something 2") {
+    id
+    name
+  }
+}
