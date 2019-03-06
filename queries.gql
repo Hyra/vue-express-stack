@@ -33,3 +33,31 @@ mutation deletePlan {
     message
   }
 }
+
+mutation {
+  addStudentSubscription(
+    dojoSlug: "firewall"
+    student: "cus_EeFuv7J3eXjqtk"
+    plan: "plan_EeNvLHViqRI04T"
+  ) {
+    result
+    message
+  }
+}
+
+query {
+  listStudentSubscriptions(
+    dojoSlug: "firewall"
+    student: "cus_EeFuv7J3eXjqtk"
+  ) {
+    id
+    created
+  }
+}
+
+mutation {
+  deleteStudentSubscription(dojoSlug: "firewall", plan: "sub_EePtZDAZ5vBuP7") {
+    result
+    message
+  }
+}

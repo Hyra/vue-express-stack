@@ -107,18 +107,20 @@ export default {
     ),
     listStudentSubscriptions: combineResolvers(
       isSenseiOfDojo,
-      async (parent, { dojoSlug, student }, { db }) => {
+      async (parent, { dojoSlug, student, status }, { db }) => {
         // Dojo we're handling
         const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
 
-        const subscriptions = await stripe.subscriptions.list(
-          {
-            customer: student
-          },
-          {
-            stripe_account: dojo.stripeId
-          }
-        );
+        const params = {
+          customer: student
+        };
+        if (status) {
+          params.status = status;
+        }
+
+        const subscriptions = await stripe.subscriptions.list(params, {
+          stripe_account: dojo.stripeId
+        });
 
         return subscriptions.data;
       }
@@ -291,6 +293,66 @@ export default {
         return {
           result: true,
           message: "Plan succesfully deleted"
+        };
+      }
+    ),
+    addStudentSubscription: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, student, plan }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.subscriptions.create(
+            {
+              customer: student,
+              billing: "send_invoice",
+              days_until_due: 30,
+              application_fee_percent: 2,
+              backdate_start_date: 1548979200,
+              items: [
+                {
+                  plan: plan
+                }
+              ]
+            },
+            {
+              stripe_account: dojo.stripeId
+            }
+          );
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Subscription succesfully created"
+        };
+      }
+    ),
+    deleteStudentSubscription: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, plan }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.subscriptions.del(plan, {
+            stripe_account: dojo.stripeId
+          });
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Product succesfully deleted"
         };
       }
     )

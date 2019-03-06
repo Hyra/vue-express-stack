@@ -1,6 +1,10 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
+  type Availability {
+    available: Boolean!
+  }
+
   type Dojo {
     id: ID!
     title: String
@@ -42,6 +46,7 @@ export default gql`
     listStudentSubscriptions(
       dojoSlug: String!
       student: String!
+      status: String
     ): [Subscription]!
   }
 
@@ -63,9 +68,11 @@ export default gql`
     ): Plan!
     deletePlan(dojoSlug: String!, plan: String!): BoolMessage!
     deleteBillingProduct(dojoSlug: String!, product: String!): BoolMessage!
-  }
-
-  type Availability {
-    available: Boolean!
+    addStudentSubscription(
+      dojoSlug: String!
+      student: String!
+      plan: String!
+    ): BoolMessage!
+    deleteStudentSubscription(dojoSlug: String!, plan: String!): BoolMessage!
   }
 `;
