@@ -355,6 +355,29 @@ export default {
           message: "Product succesfully deleted"
         };
       }
+    ),
+    deleteStudent: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, student }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.customers.del(student, {
+            stripe_account: dojo.stripeId
+          });
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Student succesfully deleted"
+        };
+      }
     )
   }
 };

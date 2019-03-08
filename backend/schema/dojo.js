@@ -74,5 +74,6 @@ export default gql`
       plan: String!
     ): BoolMessage!
     deleteStudentSubscription(dojoSlug: String!, plan: String!): BoolMessage!
+    deleteStudent(dojoSlug: String!, student: String!): BoolMessage!
   }
 `;
