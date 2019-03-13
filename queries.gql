@@ -49,9 +49,20 @@ query {
   listStudentSubscriptions(
     dojoSlug: "firewall"
     student: "cus_EeFuv7J3eXjqtk"
+    status: "active"
   ) {
     id
     created
+    days_until_due
+    current_period_start
+    current_period_end
+    plan {
+      nickname
+      interval
+      product {
+        name
+      }
+    }
   }
 }
 

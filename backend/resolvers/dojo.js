@@ -140,7 +140,8 @@ export default {
         const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
 
         const params = {
-          customer: student
+          customer: student,
+          expand: ["data.plan.product"]
         };
         if (status) {
           params.status = status;

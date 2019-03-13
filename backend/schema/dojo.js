@@ -25,6 +25,7 @@ export default gql`
     interval_count: Int
     amount: String
     currency: String
+    product: BillingProduct
   }
 
   type BoolMessage {
@@ -35,6 +36,10 @@ export default gql`
   type Subscription {
     id: ID!
     created: String
+    days_until_due: Int
+    current_period_start: Int
+    current_period_end: Int
+    plan: Plan
   }
 
   extend type Query {
