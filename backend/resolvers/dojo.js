@@ -2,6 +2,7 @@ import { combineResolvers } from "graphql-resolvers";
 // import { isAuthenticated } from "./authorization";
 import { isSenseiOfDojo } from "./authorization";
 import Stripe from "stripe";
+import { AuthenticationError } from "apollo-server-express";
 
 const stripe = Stripe("sk_test_HjMDt0IGY1gapAtwisALNOuf");
 
@@ -51,6 +52,33 @@ export default {
         });
 
         return profiles;
+      }
+    ),
+    getStudent: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, student }, { db }) => {
+        const dojo = await db.dojo.find({
+          where: {
+            handle: dojoSlug
+          }
+        });
+
+        const profile = await dojo.getProfiles({
+          where: {
+            stripeId: student
+          },
+          include: [
+            {
+              model: db.user
+            }
+          ]
+        });
+
+        if (typeof profile[0] === "undefined") {
+          throw new AuthenticationError("Invalid student.");
+        }
+
+        return profile[0];
       }
     ),
     getBillingProducts: combineResolvers(

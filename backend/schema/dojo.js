@@ -41,6 +41,7 @@ export default gql`
     dojos: [Dojo!]!
     isHandleAvailable(handle: String!): Availability
     getStudents(dojoSlug: String!): [Profile]!
+    getStudent(dojoSlug: String!, student: String!): Profile!
     getBillingProducts(dojoSlug: String!): [BillingProduct]!
     getPlans(dojoSlug: String!): [Plan]!
     listStudentSubscriptions(

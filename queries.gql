@@ -61,3 +61,12 @@ mutation {
     message
   }
 }
+
+query {
+  getStudent(dojoSlug: "firewall", student: "cus_EeFuv7J3eXjqtk") {
+    id
+    user {
+      email
+    }
+  }
+}
