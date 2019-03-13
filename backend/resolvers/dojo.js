@@ -326,28 +326,37 @@ export default {
     ),
     addStudentSubscription: combineResolvers(
       isSenseiOfDojo,
-      async (parent, { dojoSlug, student, plan }, { db }) => {
+      async (
+        parent,
+        { dojoSlug, student, plan, backdate_start_date, trial_end },
+        { db }
+      ) => {
         // Dojo we're handling
         const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
 
         try {
-          await stripe.subscriptions.create(
-            {
-              customer: student,
-              billing: "send_invoice",
-              days_until_due: 30,
-              application_fee_percent: 2,
-              backdate_start_date: 1548979200,
-              items: [
-                {
-                  plan: plan
-                }
-              ]
-            },
-            {
-              stripe_account: dojo.stripeId
-            }
-          );
+          const params = {
+            customer: student,
+            billing: "send_invoice",
+            days_until_due: 30,
+            application_fee_percent: 2,
+            // backdate_start_date: 1522494263,
+            // trial_end: 1553494263,
+            items: [
+              {
+                plan: plan
+              }
+            ]
+          };
+          if (backdate_start_date) {
+            params.backdate_start_date = backdate_start_date;
+          }
+          if (trial_end) {
+            params.trial_end = trial_end;
+          }
+          await stripe.subscriptions.create(params, {
+            stripe_account: dojo.stripeId
+          });
         } catch (e) {
           return {
             result: false,

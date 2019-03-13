@@ -73,6 +73,8 @@ export default gql`
       dojoSlug: String!
       student: String!
       plan: String!
+      backdate_start_date: String
+      trial_end: Int
     ): BoolMessage!
     deleteStudentSubscription(dojoSlug: String!, plan: String!): BoolMessage!
     deleteStudent(dojoSlug: String!, student: String!): BoolMessage!
