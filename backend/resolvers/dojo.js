@@ -327,11 +327,7 @@ export default {
     ),
     addStudentSubscription: combineResolvers(
       isSenseiOfDojo,
-      async (
-        parent,
-        { dojoSlug, student, plan, backdate_start_date, trial_end },
-        { db }
-      ) => {
+      async (parent, { dojoSlug, student, plan, start }, { db }) => {
         // Dojo we're handling
         const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
 
@@ -349,11 +345,14 @@ export default {
               }
             ]
           };
-          if (backdate_start_date) {
-            params.backdate_start_date = backdate_start_date;
-          }
-          if (trial_end) {
-            params.trial_end = trial_end;
+
+          const currentDate = Math.round(new Date().getTime() / 1000);
+          if (start) {
+            if (start > currentDate) {
+              params.trial_end = start;
+            } else {
+              params.backdate_start_date = start;
+            }
           }
           await stripe.subscriptions.create(params, {
             stripe_account: dojo.stripeId
