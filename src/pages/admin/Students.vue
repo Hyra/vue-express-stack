@@ -1,15 +1,22 @@
 <template>
   <div class="students">
-    <h1>Students</h1>
-    <ul>
-      <li v-for="student in students" :key="student.id">
-        <router-link
-          :to="{ name: 'student', params: { studentId: student.id } }"
-          >Load student</router-link
-        >
-        {{ student }}
-      </li>
-    </ul>
+    <div class="content-box">
+      <div class="view-box">
+        <div class="container">
+          <h1>Students</h1>
+          <ul>
+            <li v-for="student in students" :key="student.id" class="blsock">
+              <router-link
+                :to="{ name: 'student', params: { studentId: student.id } }"
+                >Load student</router-link
+              >
+              {{ student }}
+            </li>
+          </ul>
+        </div>
+        <div class="aside-sticky"><div class="aside-wrap">ASIDE</div></div>
+      </div>
+    </div>
   </div>
 </template>
 
