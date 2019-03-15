@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Exo+2:200,300,400,500,600,700,800,900|Merriweather:400,700,900|Montserrat:400,500,600,700|Raleway:400,500,600,700,900i");
+
 * {
   margin: 0;
   padding: 0;
@@ -18,10 +20,6 @@ body {
   //   flex-direction: row;
   //   align-items: center;
   background: #f8fbfd;
-}
-
-#app {
-  //   flex: 1;
 }
 
 .content-box {
@@ -49,7 +47,6 @@ body {
       width: 100%;
       margin: 0 auto;
       padding: 0 0.75rem;
-      background: yellow;
       max-width: 55rem;
       margin: 0;
       margin-top: 4rem;
@@ -66,6 +63,13 @@ body {
         vertical-align: top;
         transition: 0.3s transform, 0.3s opacity;
         padding-top: 4rem;
+        .aside-actions {
+          list-style: none;
+          li {
+            margin-bottom: 12px;
+            padding-left: 1rem;
+          }
+        }
       }
     }
   }
@@ -81,4 +85,31 @@ body {
   box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
   //   max-width: 800px;
   //   margin: 20px auto;
+}
+
+h1 {
+  font-family: "Merriweather";
+  font-size: 23px;
+  font-weight: 900;
+}
+
+button {
+  background: white;
+  border: 2px solid #0e8fff;
+  color: #0e8fff;
+  border-radius: 3px;
+  padding: 6px 12px;
+  box-shadow: 3px 3px 0 0 rgba(82, 149, 255, 0.16);
+  font-weight: bold;
+  font-size: 12px;
+  transition: background, color 0.3s ease-out;
+  cursor: pointer;
+  outline: 0;
+  &:hover {
+    background: #0e8fff;
+    color: #fff;
+  }
+  &:active {
+    margin-top: 1px;
+  }
 }

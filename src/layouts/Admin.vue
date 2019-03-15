@@ -1,15 +1,16 @@
 <template>
   <div>
     <header>
-      <div><img src="@/assets/logo_inv.png" height="40" /></div>
+      <div><img src="@/assets/logo2.png" height="40" /></div>
 
       <div class="navItems">
+        <!-- {{ $mq }} -->
         <!-- <router-link to="/">Home</router-link> -->
         <!-- <router-link :to="{ name: 'dashboard' }">dashboard</router-link> -->
-        <router-link :to="{ name: 'students' }">students</router-link>
+        <router-link :to="{ name: 'students' }">Students</router-link>
         <!-- <router-link :to="{ name: 'student', params: { studentId: 666 } }">student</router-link> -->
         <!-- <router-link :to="{ name: 'student-new' }">student-new</router-link> -->
-        <router-link :to="{ name: 'invoices' }">invoices</router-link>
+        <router-link :to="{ name: 'invoices' }">Invoices</router-link>
         <!-- <router-link :to="{ name: 'invoice', params: { invoiceId: 222 } }">invoice</router-link> -->
         <!-- <router-link :to="{ name: 'contribution-plans' }">contribution-plans</router-link> -->
         <!-- <router-link :to="{ name: 'plan', params: { planId: 333 } }">plan</router-link> -->
@@ -36,12 +37,33 @@ header {
   width: 100%;
   height: 80px;
   background: #fff url(/images/logo.svg) center center no-repeat;
+  background: #0e8fff;
+  color: white !important;
   border-bottom: 1px solid #f3f3ff;
   padding: 0 20px;
   .navItems {
     width: 55rem;
     a {
-      padding-right: 20px;
+      margin-right: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      text-transform: capitalize;
+      font-size: 13px;
+      border-radius: 3px;
+      padding: 7px 12px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background-color 0.2s ease-in;
+      &:hover {
+        background-color: #06acff;
+      }
+      &.router-link-active {
+        background-color: #06acff;
+      }
     }
   }
 }
