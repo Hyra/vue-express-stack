@@ -4,14 +4,14 @@
       <div class="view-box">
         <div class="container">
           <!-- <h1>New Student</h1> -->
-          <div class="holder">
+          <div class="blocker">
             <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
             <el-form
               ref="newStudentForm"
               :rules="rules"
               :model="newStudentForm"
               label-width="120px"
-              label-position="top"
+              label-position="left"
             >
               <el-form-item label="E-mail" prop="email">
                 <el-input
@@ -108,11 +108,15 @@ export default {
                 firstname: this.newStudentForm.firstname,
                 lastname: this.newStudentForm.lastname
               },
-              update: () => {
+              update: (data, res) => {
+                // console.log(res.data.newStudent.id);
                 // this.processingForm = false;
                 this.$router.push({
-                  name: "students",
-                  dojoSlug: this.$route.params.dojoSlug
+                  name: "student",
+                  params: {
+                    dojoSlug: this.$route.params.dojoSlug,
+                    studentId: res.data.newStudent.stripeId
+                  }
                 });
               }
             })
@@ -121,6 +125,7 @@ export default {
               this.errorMessage = e.message;
             });
         } else {
+          this.processingForm = false;
           return false;
         }
       });
@@ -128,13 +133,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.holder {
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
-  box-shadow: 0 0 1px 0 rgba(61, 119, 180, 0.12),
-    0 0.25rem 12px 0 rgba(91, 139, 199, 0.24);
-  padding: 20px;
-}
-</style>
+<style lang="scss" scoped></style>

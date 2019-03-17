@@ -2,7 +2,6 @@
   <div>
     <header>
       <div><img src="@/assets/logo2.png" height="40" /></div>
-
       <div class="navItems">
         <!-- {{ $mq }} -->
         <!-- <router-link to="/">Home</router-link> -->
@@ -41,12 +40,13 @@ header {
   color: white !important;
   border-bottom: 1px solid #f3f3ff;
   padding: 0 20px;
+  position: fixed;
+  z-index: 10;
   .navItems {
     width: 55rem;
     a {
       margin-right: 20px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      font-weight: 100;
       text-decoration: none;
       color: #fff;
       font-weight: 600;
