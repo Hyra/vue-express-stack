@@ -2,7 +2,7 @@ import { combineResolvers } from "graphql-resolvers";
 // import { isAuthenticated } from "./authorization";
 import { isSenseiOfDojo } from "./authorization";
 import Stripe from "stripe";
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError, UserInputError } from "apollo-server-express";
 
 const stripe = Stripe("sk_test_HjMDt0IGY1gapAtwisALNOuf");
 
@@ -185,7 +185,8 @@ export default {
           if (userCheck.profiles.length) {
             // Need to do nothing, already have a profile for this dojo
             // TODO: Send error? Or just the profile?
-            return userCheck.profiles[0];
+            return new UserInputError("Email already exists");
+            // return userCheck.profiles[0];
           } else {
             // Need to create a profile for the found user
 
