@@ -159,7 +159,7 @@ export default {
   Mutation: {
     newStudent: combineResolvers(
       isSenseiOfDojo,
-      async (parent, { dojoSlug, email, firstname, lastname }, { db }) => {
+      async (parent, { dojoSlug, email, firstName, lastName }, { db }) => {
         // Dojo we're handling
         const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
 
@@ -200,8 +200,8 @@ export default {
             );
             const profile = await db.profile.create({
               stripeId: stripeCustomer.id,
-              firstname,
-              lastname
+              firstName,
+              lastName
             });
             await profile.setDojo(dojo);
             await userCheck.addProfile(profile);
@@ -225,8 +225,8 @@ export default {
 
           const profile = await db.profile.create({
             stripeId: stripeCustomer.id,
-            firstname,
-            lastname
+            firstName,
+            lastName
           });
           await profile.setDojo(dojo);
           await student.addProfile(profile);

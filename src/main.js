@@ -3,8 +3,24 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/";
 import VueMq from "vue-mq";
+import VueTimeago from "vue-timeago";
+
+import "vue-awesome/icons";
+import Icon from "vue-awesome/components/Icon";
+Vue.component("v-icon", Icon);
 
 import "./main.scss";
+
+Vue.use(VueTimeago, {
+  name: "Timeago", // Component name, `Timeago` by default
+  locale: "en" // Default locale
+  // We use `date-fns` under the hood
+  // So you can use all locales from it
+  // locales: {
+  // "zh-CN": require("date-fns/locale/zh_cn"),
+  // ja: require("date-fns/locale/ja")
+  // }
+});
 
 Vue.use(VueMq, {
   breakpoints: {

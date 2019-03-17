@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       isSensei: {
         type: DataTypes.BOOLEAN,
         default: false
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {

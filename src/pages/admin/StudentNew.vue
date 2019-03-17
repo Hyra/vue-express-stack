@@ -19,21 +19,21 @@
                   placeholder="Please input"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="Firstname" prop="firstname">
+              <el-form-item label="Firstname" prop="firstName">
                 <el-input
-                  v-model="newStudentForm.firstname"
+                  v-model="newStudentForm.firstName"
                   placeholder="Please input"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="Lastname" prop="lastname">
+              <el-form-item label="Lastname" prop="lastName">
                 <el-input
-                  v-model="newStudentForm.lastname"
+                  v-model="newStudentForm.lastName"
                   placeholder="Please input"
                 ></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button
-                  :loading="this.processingForm"
+                  :loading="processingForm"
                   type="primary"
                   @click="addStudent"
                   >Add student</el-button
@@ -57,18 +57,18 @@ export default {
     return {
       newStudentForm: {
         email: "",
-        firstname: "",
-        lastname: ""
+        firstName: "",
+        lastName: ""
       },
       rules: {
         email: [
           { required: true, message: "Please input Email", trigger: "blur" },
           { type: "email", message: "Email is not valid", trigger: "blur" }
         ],
-        firstname: [
+        firstName: [
           { required: true, message: "Please input firstname", trigger: "blur" }
         ],
-        lastname: [
+        lastName: [
           { required: true, message: "Please input lastname", trigger: "blur" }
         ]
       },
@@ -88,14 +88,14 @@ export default {
                 mutation(
                   $dojoSlug: String!
                   $email: String!
-                  $firstname: String!
-                  $lastname: String!
+                  $firstName: String!
+                  $lastName: String!
                 ) {
                   newStudent(
                     dojoSlug: $dojoSlug
                     email: $email
-                    firstname: $firstname
-                    lastname: $lastname
+                    firstName: $firstName
+                    lastName: $lastName
                   ) {
                     id
                     stripeId
@@ -105,8 +105,8 @@ export default {
               variables: {
                 dojoSlug: this.$route.params.dojoSlug,
                 email: this.newStudentForm.email,
-                firstname: this.newStudentForm.firstname,
-                lastname: this.newStudentForm.lastname
+                firstName: this.newStudentForm.firstName,
+                lastName: this.newStudentForm.lastName
               },
               update: (data, res) => {
                 // console.log(res.data.newStudent.id);

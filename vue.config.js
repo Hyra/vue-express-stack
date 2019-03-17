@@ -8,5 +8,6 @@ module.exports = {
     proxy: {
       "/api": { target }
     }
-  }
+  },
+  transpileDependencies: [/\bvue-awesome\b/]
 };
