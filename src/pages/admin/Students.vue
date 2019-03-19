@@ -22,7 +22,7 @@
                       params: { studentId: student.stripeId }
                     }"
                   >
-                    View student
+                    <i class="fas fa-external-link-alt"></i>
                   </router-link>
                 </div>
               </li>

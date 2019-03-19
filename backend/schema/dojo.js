@@ -63,6 +63,12 @@ export default gql`
       firstName: String!
       lastName: String!
     ): Profile!
+    editStudent(
+      dojoSlug: String!
+      student: String!
+      firstName: String!
+      lastName: String!
+    ): Profile!
     newBillingProduct(dojoSlug: String!, name: String!): BillingProduct!
     newPlan(
       dojoSlug: String!

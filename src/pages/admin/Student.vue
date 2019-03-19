@@ -7,7 +7,16 @@
           <div v-if="student" class="blocker">
             <div class="blocker__header">
               <h1>{{ student.firstName }} {{ student.lastName }}</h1>
-              <span> <v-icon name="pencil-alt" scale="1" /> </span>
+              <router-link
+                :to="{
+                  name: 'student-edit',
+                  params: {
+                    dojoSlug: $route.params.dojoSlug,
+                    studentId: $route.params.studentId
+                  }
+                }"
+                ><v-icon name="pencil-alt" scale="1"
+              /></router-link>
             </div>
             Joined {{ joinDateAgo }} at {{ joinDate }}
           </div>

@@ -234,6 +234,24 @@ export default {
         }
       }
     ),
+    editStudent: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { student, firstName, lastName }, { db }) => {
+        // Dojo we're handling
+        // const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const profile = await db.profile.findOne({
+          where: { stripeId: student }
+        });
+
+        profile.firstName = firstName;
+        profile.lastName = lastName;
+
+        await profile.save();
+
+        return profile;
+      }
+    ),
     newBillingProduct: combineResolvers(
       isSenseiOfDojo,
       async (parent, { dojoSlug, name }, { db }) => {

@@ -93,6 +93,12 @@ export default new Router({
             import(/* webpackChunkName: "student" */ "./pages/admin/Student.vue")
         },
         {
+          path: "students/:studentId/edit",
+          name: "student-edit",
+          component: () =>
+            import(/* webpackChunkName: "student-edit" */ "./pages/admin/StudentEdit.vue")
+        },
+        {
           path: "billing/invoices",
           name: "invoices",
           component: () =>
