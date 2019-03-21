@@ -1,43 +1,28 @@
 <template>
-  <div class="students">
-    <div class="content-box">
-      <div class="view-box">
-        <div class="container">
-          <div class="blocker">
-            <ul class="studentList">
-              <li v-for="student in students" :key="student.stripeId">
-                <!-- <div class="student__avatar">
+  <div class="blocker">
+    <ul class="studentList">
+      <li v-for="student in students" :key="student.stripeId">
+        <!-- <div class="student__avatar">
                 <img
                   :src="`https://robohash.org/${student.user.email}?set=set4`"
                   alt=""
                   width="30"
                 />
               </div> -->
-                <div class="student__name">{{ faker.name.findName() }}</div>
-                <div class="student__link">
-                  <!-- {{ student }} -->
-                  <router-link
-                    :to="{
-                      name: 'student',
-                      params: { studentId: student.stripeId }
-                    }"
-                  >
-                    <i class="fas fa-external-link-alt"></i>
-                  </router-link>
-                </div>
-              </li>
-            </ul>
-          </div>
+        <div class="student__name">{{ faker.name.findName() }}</div>
+        <div class="student__link">
+          <!-- {{ student }} -->
+          <router-link
+            :to="{
+              name: 'student',
+              params: { studentId: student.stripeId }
+            }"
+          >
+            <i class="fas fa-external-link-alt"></i>
+          </router-link>
         </div>
-        <div class="aside-sticky">
-          <div class="aside-wrap">
-            <ul class="aside-actions">
-              <li><button @click="loadStudent">Add new student</button></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 

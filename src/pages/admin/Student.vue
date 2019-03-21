@@ -1,29 +1,19 @@
 <template>
-  <div class="student">
-    <div class="content-box">
-      <div class="view-box">
-        <div v-loading="$apollo.loading" class="container">
-          <!-- <h1>New Student</h1> -->
-          <div v-if="student" class="blocker">
-            <div class="blocker__header">
-              <h1>{{ student.firstName }} {{ student.lastName }}</h1>
-              <router-link
-                :to="{
-                  name: 'student-edit',
-                  params: {
-                    dojoSlug: $route.params.dojoSlug,
-                    studentId: $route.params.studentId
-                  }
-                }"
-                ><v-icon name="pencil-alt" scale="1"
-              /></router-link>
-            </div>
-            Joined {{ joinDateAgo }} at {{ joinDate }}
-          </div>
-        </div>
-        <div class="aside-sticky"><div class="aside-wrap"></div></div>
-      </div>
+  <div v-if="student" class="blocker">
+    <div class="blocker__header">
+      <h1>{{ student.firstName }} {{ student.lastName }}</h1>
+      <router-link
+        :to="{
+          name: 'student-edit',
+          params: {
+            dojoSlug: $route.params.dojoSlug,
+            studentId: $route.params.studentId
+          }
+        }"
+        ><v-icon name="pencil-alt" scale="1"
+      /></router-link>
     </div>
+    Joined {{ joinDateAgo }} at {{ joinDate }}
   </div>
 </template>
 

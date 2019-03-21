@@ -1,57 +1,43 @@
 <template>
-  <div class="studentEdit">
-    <div class="content-box">
-      <div class="view-box">
-        <div class="container">
-          <!-- <h1>New Student</h1> -->
-          <div class="blocker">
-            <div class="blocker__header">
-              <h1>
-                Editing {{ editStudentForm.firstName }}
-                {{ editStudentForm.lastName }}
-              </h1>
-            </div>
-            <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-            <el-form
-              ref="editStudentForm"
-              :rules="rules"
-              :model="editStudentForm"
-              label-width="120px"
-              label-position="left"
-            >
-              <el-form-item label="E-mail" prop="email">
-                <el-input
-                  v-model="editStudentForm.email"
-                  placeholder="Please input"
-                  disabled
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="Firstname" prop="firstName">
-                <el-input
-                  v-model="editStudentForm.firstName"
-                  placeholder="Please input"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="Lastname" prop="lastName">
-                <el-input
-                  v-model="editStudentForm.lastName"
-                  placeholder="Please input"
-                ></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button
-                  :loading="processingForm"
-                  type="primary"
-                  @click="editStudent"
-                  >Update</el-button
-                >
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
-        <div class="aside-sticky"><div class="aside-wrap"></div></div>
-      </div>
+  <div class="blocker">
+    <div class="blocker__header">
+      <h1>
+        Editing {{ editStudentForm.firstName }} {{ editStudentForm.lastName }}
+      </h1>
     </div>
+    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    <el-form
+      ref="editStudentForm"
+      :rules="rules"
+      :model="editStudentForm"
+      label-width="120px"
+      label-position="left"
+    >
+      <el-form-item label="E-mail" prop="email">
+        <el-input
+          v-model="editStudentForm.email"
+          placeholder="Please input"
+          disabled
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Firstname" prop="firstName">
+        <el-input
+          v-model="editStudentForm.firstName"
+          placeholder="Please input"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Lastname" prop="lastName">
+        <el-input
+          v-model="editStudentForm.lastName"
+          placeholder="Please input"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button :loading="processingForm" type="primary" @click="editStudent"
+          >Update</el-button
+        >
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

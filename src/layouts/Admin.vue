@@ -1,15 +1,21 @@
 <template>
   <div>
     <header>
-      <div><img src="@/assets/logo2.png" height="40" /></div>
-      <div class="navItems">
+      <div><img src="@/assets/logo3.png" height="40" /></div>
+      <div class="navItems" style="display: none">
         <!-- {{ $mq }} -->
         <!-- <router-link to="/">Home</router-link> -->
-        <!-- <router-link :to="{ name: 'dashboard' }">dashboard</router-link> -->
+        <router-link :to="{ name: 'dashboard' }" exact>dashboard</router-link>
         <router-link :to="{ name: 'students' }">Students</router-link>
+        <router-link :to="{ name: 'dashboard' }" exact>Payments</router-link>
+        <router-link :to="{ name: 'dashboard' }" exact>Balance</router-link>
+        <router-link :to="{ name: 'dashboard' }" exact>Billing</router-link
+        ><router-link :to="{ name: 'dashboard' }" exact
+          >Dojo Settings</router-link
+        >
         <!-- <router-link :to="{ name: 'student', params: { studentId: 666 } }">student</router-link> -->
         <!-- <router-link :to="{ name: 'student-new' }">student-new</router-link> -->
-        <router-link :to="{ name: 'invoices' }">Invoices</router-link>
+        <!-- <router-link :to="{ name: 'invoices' }">Invoices</router-link> -->
         <!-- <router-link :to="{ name: 'invoice', params: { invoiceId: 222 } }">invoice</router-link> -->
         <!-- <router-link :to="{ name: 'contribution-plans' }">contribution-plans</router-link> -->
         <!-- <router-link :to="{ name: 'plan', params: { planId: 333 } }">plan</router-link> -->
@@ -22,7 +28,68 @@
       </div>
       <div>Settings / Logout</div>
     </header>
-    <router-view />
+
+    <div class="students">
+      <div class="content-box">
+        <div class="view-box">
+          <div class="aside-sticky">
+            <div class="aside-wrap">
+              <ul class="aside-actions">
+                <li>
+                  <router-link :to="{ name: 'dashboard' }" exact
+                    ><i class="fas fa-tachometer-alt"></i>
+                    Dashboard</router-link
+                  >
+                </li>
+                <li>
+                  <router-link :to="{ name: 'students' }" exact
+                    ><i class="fas fa-graduation-cap"></i> Students</router-link
+                  >
+                </li>
+                <li>
+                  <router-link :to="{ name: 'dashboard' }" exact
+                    ><i class="far fa-credit-card"></i> Payments</router-link
+                  >
+                </li>
+                <li>
+                  <router-link :to="{ name: 'dashboard' }" exact
+                    ><i class="fas fa-balance-scale"></i> Balance</router-link
+                  >
+                </li>
+                <li>
+                  <router-link :to="{ name: 'invoices' }" exact
+                    ><i class="fas fa-money-bill-alt"></i> Billing</router-link
+                  >
+                  <ul v-if="$route.path.indexOf('billing') > 0" class="subnav">
+                    <li>
+                      <router-link :to="{ name: 'dashboard' }" exact>
+                        Invoices</router-link
+                      >
+                    </li>
+                    <li>
+                      <router-link :to="{ name: 'dashboard' }" exact>
+                        Membership Plans</router-link
+                      >
+                    </li>
+                    <li>
+                      <router-link :to="{ name: 'subscriptions' }" exact>
+                        Subscriptions</router-link
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <router-link :to="{ name: 'dashboard' }" exact
+                    ><i class="fas fa-cog"></i> Dojo settings</router-link
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="container"><router-view /></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,7 +112,7 @@ header {
   .navItems {
     width: 55rem;
     a {
-      margin-right: 20px;
+      margin-right: 10px;
       font-weight: 100;
       text-decoration: none;
       color: #fff;
