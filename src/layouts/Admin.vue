@@ -1,18 +1,16 @@
 <template>
   <div>
     <header>
-      <div><img src="@/assets/logo3.png" height="40" /></div>
-      <div class="navItems" style="display: none">
+      <div><img src="@/assets/logo2.png" height="40" /></div>
+      <div class="navItems">
         <!-- {{ $mq }} -->
         <!-- <router-link to="/">Home</router-link> -->
-        <router-link :to="{ name: 'dashboard' }" exact>dashboard</router-link>
-        <router-link :to="{ name: 'students' }">Students</router-link>
-        <router-link :to="{ name: 'dashboard' }" exact>Payments</router-link>
-        <router-link :to="{ name: 'dashboard' }" exact>Balance</router-link>
-        <router-link :to="{ name: 'dashboard' }" exact>Billing</router-link
-        ><router-link :to="{ name: 'dashboard' }" exact
-          >Dojo Settings</router-link
-        >
+        <!-- <router-link :to="{ name: 'dashboard' }" exact>dashboard</router-link> -->
+        <!-- <router-link :to="{ name: 'students' }">Students</router-link> -->
+        <!-- <router-link :to="{ name: 'dashboard' }" exact>Payments</router-link> -->
+        <!-- <router-link :to="{ name: 'dashboard' }" exact>Balance</router-link> -->
+        <!-- <router-link :to="{ name: 'dashboard' }" exact>Billing</router-link> -->
+        <!-- <router-link :to="{ name: 'dashboard' }" exact>Dojo Settings</router-link> -->
         <!-- <router-link :to="{ name: 'student', params: { studentId: 666 } }">student</router-link> -->
         <!-- <router-link :to="{ name: 'student-new' }">student-new</router-link> -->
         <!-- <router-link :to="{ name: 'invoices' }">Invoices</router-link> -->
@@ -104,6 +102,7 @@ header {
   height: 80px;
   background: #fff url(/images/logo.svg) center center no-repeat;
   background: #0e8fff;
+  background: linear-gradient(to left, #0e8fff, #2c80ca);
   color: white !important;
   border-bottom: 1px solid #f3f3ff;
   padding: 0 20px;

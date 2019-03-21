@@ -1,50 +1,39 @@
 <template>
-  <div class="students">
-    <div class="content-box">
-      <div class="view-box">
-        <div class="container">
-          <!-- <h1>New Student</h1> -->
-          <div class="blocker">
-            <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-            <el-form
-              ref="newStudentForm"
-              :rules="rules"
-              :model="newStudentForm"
-              label-width="120px"
-              label-position="left"
-            >
-              <el-form-item label="E-mail" prop="email">
-                <el-input
-                  v-model="newStudentForm.email"
-                  placeholder="Please input"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="Firstname" prop="firstName">
-                <el-input
-                  v-model="newStudentForm.firstName"
-                  placeholder="Please input"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="Lastname" prop="lastName">
-                <el-input
-                  v-model="newStudentForm.lastName"
-                  placeholder="Please input"
-                ></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button
-                  :loading="processingForm"
-                  type="primary"
-                  @click="addStudent"
-                  >Add student</el-button
-                >
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
-        <div class="aside-sticky"><div class="aside-wrap"></div></div>
-      </div>
-    </div>
+  <div class="blocker">
+    <h1>New student</h1>
+    <br />
+    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    <el-form
+      ref="newStudentForm"
+      :rules="rules"
+      :model="newStudentForm"
+      label-width="120px"
+      label-position="left"
+    >
+      <el-form-item label="E-mail" prop="email">
+        <el-input
+          v-model="newStudentForm.email"
+          placeholder="Please input"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Firstname" prop="firstName">
+        <el-input
+          v-model="newStudentForm.firstName"
+          placeholder="Please input"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Lastname" prop="lastName">
+        <el-input
+          v-model="newStudentForm.lastName"
+          placeholder="Please input"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button :loading="processingForm" type="primary" @click="addStudent"
+          >Add student</el-button
+        >
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -133,4 +122,9 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.error {
+  margin: 10px 0 30px 0;
+  color: red;
+}
+</style>

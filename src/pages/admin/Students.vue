@@ -1,5 +1,20 @@
 <template>
   <div class="blocker">
+    <div
+      style="display:flex; justify-content: space-between; padding: 0 0 20px 0"
+    >
+      <h1>Student overview</h1>
+
+      <router-link
+        :to="{
+          name: 'student-new',
+          params: { dojoSlug: $route.params.dojoSlug }
+        }"
+        ><button>
+          <i class="fas fa-user-plus"></i> Add new student
+        </button></router-link
+      >
+    </div>
     <ul class="studentList">
       <li v-for="student in students" :key="student.stripeId">
         <!-- <div class="student__avatar">
