@@ -1,7 +1,7 @@
 <template>
   <div class="blocker">
-    <h1>New student</h1>
-    <br />
+    <div class="blocker__header"><h1>New student</h1></div>
+
     <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     <el-form
       ref="newStudentForm"

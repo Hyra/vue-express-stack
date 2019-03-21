@@ -1,8 +1,6 @@
 <template>
   <div class="blocker">
-    <div
-      style="display:flex; justify-content: space-between; padding: 0 0 20px 0"
-    >
+    <div class="blocker__header">
       <h1>Student overview</h1>
 
       <router-link
