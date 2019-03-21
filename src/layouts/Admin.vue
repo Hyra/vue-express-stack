@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <div><img src="@/assets/logo2.png" height="40" /></div>
+      <!-- <div><img src="@/assets/logo2.png" height="40" /></div> -->
       <div class="navItems">
         <!-- {{ $mq }} -->
         <!-- <router-link to="/">Home</router-link> -->
@@ -65,7 +65,7 @@
                       >
                     </li>
                     <li>
-                      <router-link :to="{ name: 'dashboard' }" exact>
+                      <router-link :to="{ name: 'membership-plans' }" exact>
                         Membership Plans</router-link
                       >
                     </li>
