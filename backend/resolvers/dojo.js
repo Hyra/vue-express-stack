@@ -446,6 +446,64 @@ export default {
           message: "Student succesfully deleted"
         };
       }
+    ),
+    editProduct: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, product, name }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.products.update(
+            product,
+            {
+              name
+            },
+            {
+              stripe_account: dojo.stripeId
+            }
+          );
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Product succesfully updated"
+        };
+      }
+    ),
+    editPlan: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, plan, nickname }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        try {
+          await stripe.plans.update(
+            plan,
+            {
+              nickname
+            },
+            {
+              stripe_account: dojo.stripeId
+            }
+          );
+        } catch (e) {
+          return {
+            result: false,
+            message: e.message
+          };
+        }
+
+        return {
+          result: true,
+          message: "Plan succesfully updated"
+        };
+      }
     )
   }
 };

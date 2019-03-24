@@ -18,7 +18,10 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="editingProduct = false">Cancel</el-button>
-        <el-button type="primary" @click="editingProduct = false"
+        <el-button
+          :loading="$apollo.loading"
+          type="primary"
+          @click="doEditProduct"
           >Confirm</el-button
         >
       </span>
@@ -42,7 +45,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="editingPlan = false">Cancel</el-button>
-        <el-button type="primary" @click="editingPlan = false"
+        <el-button :loading="$apollo.loading" type="primary" @click="doEditPlan"
           >Confirm</el-button
         >
       </span>
@@ -66,7 +69,12 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="addingProduct = false">Cancel</el-button>
-        <el-button type="primary" @click="doAddProduct">Confirm</el-button>
+        <el-button
+          :loading="$apollo.loading"
+          type="primary"
+          @click="doAddProduct"
+          >Confirm</el-button
+        >
       </span>
     </el-dialog>
 
@@ -105,7 +113,9 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="addingPlan = false">Cancel</el-button>
-        <el-button type="primary" @click="doAddPlan">Confirm</el-button>
+        <el-button :loading="$apollo.loading" type="primary" @click="doAddPlan"
+          >Confirm</el-button
+        >
       </span>
     </el-dialog>
 
@@ -116,40 +126,52 @@
       </button>
     </div>
 
-    <div v-for="product in products" :key="product.id" class="membership-plan">
-      <h2>
-        {{ product.name }}
-        <i class="fas fa-edit" @click="openEditProductDialog(product.id)"></i>
-      </h2>
-      <ul class="plans">
-        <li v-for="plan in product.plans" :key="plan.id" class="plan">
-          <div class="plan__description">
-            {{ plan.nickname }}
-            <span>
-              <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
-            </span>
-          </div>
-          <!-- <div class="plan__price">{{ plan.currency }} {{ plan.amount }}</div> -->
-          <div class="plan__price">
-            {{ parseAmount(plan.amount, plan.currency, false) }} /
-            {{ plan.interval }}
-          </div>
-          <!-- <div class="plan__interval">{{ plan.interval }}</div> -->
-        </li>
-        <li v-if="!product.plans.length" class="no-content">
-          You have not created any pricing plans for {{ product.name }} yet.
-        </li>
-        <li>
-          <div class="add-plan-link" @click="openAddPlanDialog(product.id)">
-            <i class="fas fa-plus" style="font-size: 12px;"></i> Add a pricing
-            plan
-          </div>
-        </li>
-      </ul>
-    </div>
+    <div v-loading="$apollo.loading">
+      <div
+        v-for="product in products"
+        :key="product.id"
+        class="membership-plan"
+      >
+        <h2>
+          {{ product.name }}
+          <i
+            class="fas fa-edit"
+            @click="openEditProductDialog(product.id, product.name)"
+          ></i>
+        </h2>
+        <ul class="plans">
+          <li v-for="plan in product.plans" :key="plan.id" class="plan">
+            <div class="plan__description">
+              {{ plan.nickname }}
+              <span>
+                <i
+                  class="fas fa-edit"
+                  @click="openEditPlanDialog(plan.id, plan.nickname)"
+                ></i>
+              </span>
+            </div>
+            <!-- <div class="plan__price">{{ plan.currency }} {{ plan.amount }}</div> -->
+            <div class="plan__price">
+              {{ parseAmount(plan.amount, plan.currency, false) }} /
+              {{ plan.interval }}
+            </div>
+            <!-- <div class="plan__interval">{{ plan.interval }}</div> -->
+          </li>
+          <li v-if="!product.plans.length" class="no-content">
+            You have not created any pricing plans for {{ product.name }} yet.
+          </li>
+          <li>
+            <div class="add-plan-link" @click="openAddPlanDialog(product.id)">
+              <i class="fas fa-plus" style="font-size: 12px;"></i> Add a pricing
+              plan
+            </div>
+          </li>
+        </ul>
+      </div>
 
-    <div v-if="!products.length" class="no-content">
-      You have not created any products yet.
+      <div v-if="!products.length" class="no-content">
+        You have not created any products yet.
+      </div>
     </div>
   </div>
 </template>
@@ -164,11 +186,13 @@ export default {
       editingProduct: false,
       editProductRules: {},
       editProductForm: {
+        product: "",
         name: ""
       },
       editingPlan: false,
       editPlanRules: {},
       editPlanForm: {
+        plan: "",
         nickname: ""
       },
       addingProduct: false,
@@ -179,7 +203,7 @@ export default {
       addingPlan: false,
       addPlanRules: {},
       addPlanForm: {
-        productId: "",
+        product: "",
         nickname: "",
         interval: "",
         interval_count: "",
@@ -228,16 +252,20 @@ export default {
     }
   },
   methods: {
-    openEditProductDialog(productId) {
-      this.editProductForm.name = productId;
+    openEditProductDialog(product, name) {
+      this.editProductForm = {
+        product: product,
+        name: name
+      };
       this.editingProduct = true;
     },
-    openEditPlanDialog(planId) {
-      this.editPlanForm.name = planId;
+    openEditPlanDialog(plan, nickname) {
+      this.editPlanForm.plan = plan;
+      this.editPlanForm.nickname = nickname;
       this.editingPlan = true;
     },
-    openAddPlanDialog(productId) {
-      this.addPlanForm.productId = productId;
+    openAddPlanDialog(product) {
+      this.addPlanForm.product = product;
       this.addPlanForm.name = "";
       this.addingPlan = true;
     },
@@ -302,7 +330,7 @@ export default {
           `,
           variables: {
             dojoSlug: this.$route.params.dojoSlug,
-            product: this.addPlanForm.productId,
+            product: this.addPlanForm.product,
             nickname: this.addPlanForm.nickname,
             interval: this.addPlanForm.interval,
             interval_count: 1, // TODO: this.addPlanForm.interval_count,
@@ -311,13 +339,73 @@ export default {
           update: () => {
             this.$apollo.queries.products.refetch().then(() => {
               this.addPlanForm.name = {
-                productId: "",
+                product: "",
                 nickname: "",
                 interval: "",
                 interval_count: "",
                 amount: ""
               };
               this.addingPlan = false;
+            });
+          }
+        })
+        .catch(e => {
+          this.errorMessage = e.message;
+        });
+    },
+    doEditProduct() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($dojoSlug: String!, $product: String!, $name: String!) {
+              editProduct(dojoSlug: $dojoSlug, product: $product, name: $name) {
+                result
+                message
+              }
+            }
+          `,
+          variables: {
+            dojoSlug: this.$route.params.dojoSlug,
+            product: this.editProductForm.product,
+            name: this.editProductForm.name
+          },
+          update: () => {
+            this.$apollo.queries.products.refetch().then(() => {
+              this.editProductForm.name = {
+                product: "",
+                name: ""
+              };
+              this.editingProduct = false;
+            });
+          }
+        })
+        .catch(e => {
+          this.errorMessage = e.message;
+        });
+    },
+    doEditPlan() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($dojoSlug: String!, $plan: String!, $nickname: String!) {
+              editPlan(dojoSlug: $dojoSlug, plan: $plan, nickname: $nickname) {
+                result
+                message
+              }
+            }
+          `,
+          variables: {
+            dojoSlug: this.$route.params.dojoSlug,
+            plan: this.editPlanForm.plan,
+            nickname: this.editPlanForm.nickname
+          },
+          update: () => {
+            this.$apollo.queries.products.refetch().then(() => {
+              this.editPlanForm.nickname = {
+                plan: "",
+                nickname: ""
+              };
+              this.editingPlan = false;
             });
           }
         })

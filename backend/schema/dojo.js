@@ -92,5 +92,11 @@ export default gql`
     ): BoolMessage!
     deleteStudentSubscription(dojoSlug: String!, plan: String!): BoolMessage!
     deleteStudent(dojoSlug: String!, student: String!): BoolMessage!
+    editProduct(
+      dojoSlug: String!
+      product: String!
+      name: String!
+    ): BoolMessage!
+    editPlan(dojoSlug: String!, plan: String!, nickname: String!): BoolMessage!
   }
 `;
