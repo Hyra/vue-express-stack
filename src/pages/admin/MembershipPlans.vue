@@ -169,7 +169,7 @@
         </ul>
       </div>
 
-      <div v-if="!products.length" class="no-content">
+      <div v-if="!$apollo.loading && !products.length" class="no-content">
         You have not created any products yet.
       </div>
     </div>
@@ -371,7 +371,7 @@ export default {
           },
           update: () => {
             this.$apollo.queries.products.refetch().then(() => {
-              this.editProductForm.name = {
+              this.editProductForm = {
                 product: "",
                 name: ""
               };
@@ -401,7 +401,7 @@ export default {
           },
           update: () => {
             this.$apollo.queries.products.refetch().then(() => {
-              this.editPlanForm.nickname = {
+              this.editPlanForm = {
                 plan: "",
                 nickname: ""
               };
