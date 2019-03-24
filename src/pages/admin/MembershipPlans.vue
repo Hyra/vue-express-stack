@@ -66,13 +66,16 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="addingProduct = false">Cancel</el-button>
-        <el-button type="primary" @click="addingProduct = false"
-          >Confirm</el-button
-        >
+        <el-button type="primary" @click="doAddProduct">Confirm</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog title="Add plan" :visible.sync="addingPlan" width="30%">
+    <el-dialog
+      v-if="dojo"
+      title="Add plan"
+      :visible.sync="addingPlan"
+      width="30%"
+    >
       <el-form
         ref="addPlan"
         :rules="addPlanRules"
@@ -81,18 +84,28 @@
         label-position="left"
       >
         <el-form-item label="Name" prop="nickname">
-          <el-input
-            v-model="addPlanForm.nickname"
-            placeholder="Please input"
-          ></el-input>
+          <el-input v-model="addPlanForm.nickname" auto-complete="off" />
+        </el-form-item>
+
+        <el-form-item label="Amount" prop="amount">
+          <el-input v-model.number="addPlanForm.amount" auto-complete="off">
+            <template slot="prepend">{{ dojo.currency_symbol }}</template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="Interval" prop="interval">
+          <el-select v-model="addPlanForm.interval" placeholder="Choose one">
+            <el-option label="Daily" value="day" />
+            <el-option label="Weekly" value="week" />
+            <el-option label="Monthly" value="month" />
+            <el-option label="Yearly" value="year" />
+          </el-select>
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="addingPlan = false">Cancel</el-button>
-        <el-button type="primary" @click="addingPlan = false"
-          >Confirm</el-button
-        >
+        <el-button type="primary" @click="doAddPlan">Confirm</el-button>
       </span>
     </el-dialog>
 
@@ -102,43 +115,31 @@
         <i class="fas fa-plus-circle"></i> Add Product
       </button>
     </div>
-    <div class="membership-plan">
+
+    <div v-for="product in products" :key="product.id" class="membership-plan">
       <h2>
-        Shinkendo <i class="fas fa-edit" @click="openEditProductDialog(2)"></i>
+        {{ product.name }}
+        <i class="fas fa-edit" @click="openEditProductDialog(product.id)"></i>
       </h2>
       <ul class="plans">
-        <li class="plan">
+        <li v-for="plan in product.plans" :key="plan.id" class="plan">
           <div class="plan__description">
-            Adults monthly
+            {{ plan.nickname }}
             <span>
               <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
             </span>
           </div>
-          <div class="plan__price">€60</div>
-          <div class="plan__interval">monthly</div>
+          <!-- <div class="plan__price">{{ plan.currency }} {{ plan.amount }}</div> -->
+          <div class="plan__price">
+            {{ parseAmount(plan.amount, plan.currency, false) }}
+          </div>
+          <div class="plan__interval">{{ plan.interval }}ly</div>
         </li>
-        <li class="plan">
-          <div class="plan__description">
-            Juniors monthly
-            <span>
-              <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
-            </span>
-          </div>
-          <div class="plan__price">€30</div>
-          <div class="plan__interval">monthly</div>
-        </li>
-        <li class="plan">
-          <div class="plan__description">
-            Adults yearly
-            <span>
-              <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
-            </span>
-          </div>
-          <div class="plan__price">€620</div>
-          <div class="plan__interval">monthly</div>
+        <li v-if="!product.plans.length" class="no-content">
+          You have not created any pricing plans for {{ product.name }} yet.
         </li>
         <li>
-          <div class="add-plan-link" @click="openAddPlanDialog(1)">
+          <div class="add-plan-link" @click="openAddPlanDialog(product.id)">
             <i class="fas fa-plus" style="font-size: 12px;"></i> Add a pricing
             plan
           </div>
@@ -146,93 +147,15 @@
       </ul>
     </div>
 
-    <div class="membership-plan">
-      <h2>
-        Aikido
-        <router-link
-          class="add-pricing-plan"
-          :to="{
-            name: 'membership-plan',
-            params: { dojoSlug: $route.params.dojoSlug, planId: 1 }
-          }"
-          ><i class="fas fa-edit" style="font-size:12px; color: #AAA"></i
-        ></router-link>
-      </h2>
-      <ul class="plans">
-        <li class="plan">
-          <div class="plan__description">
-            Adults monthly
-            <span>
-              <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
-            </span>
-          </div>
-          <div class="plan__price">€40</div>
-          <div class="plan__interval">monthly</div>
-        </li>
-        <li class="plan">
-          <div class="plan__description">
-            Juniors monthly
-            <span>
-              <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
-            </span>
-          </div>
-          <div class="plan__price">€30</div>
-          <div class="plan__interval">monthly</div>
-        </li>
-        <li>
-          <router-link
-            class="add-pricing-plan"
-            :to="{
-              name: 'student-new',
-              params: { dojoSlug: $route.params.dojoSlug }
-            }"
-            ><i class="fas fa-plus" style="font-size: 12px;"></i> Add a pricing
-            plan</router-link
-          >
-        </li>
-      </ul>
-    </div>
-
-    <div class="membership-plan">
-      <h2>
-        ISF Fee
-        <router-link
-          class="add-pricing-plan"
-          :to="{
-            name: 'membership-plan',
-            params: { dojoSlug: $route.params.dojoSlug, planId: 1 }
-          }"
-          ><i class="fas fa-edit" style="font-size:12px; color: #AAA"></i
-        ></router-link>
-      </h2>
-      <ul class="plans">
-        <li class="plan">
-          <div class="plan__description">
-            ISF Fee
-            <span>
-              <i class="fas fa-edit" @click="openEditPlanDialog(2)"></i>
-            </span>
-          </div>
-          <div class="plan__price">€50</div>
-          <div class="plan__interval">yearly</div>
-        </li>
-        <li>
-          <router-link
-            class="add-pricing-plan"
-            :to="{
-              name: 'student-new',
-              params: { dojoSlug: $route.params.dojoSlug }
-            }"
-            ><i class="fas fa-plus" style="font-size: 12px;"></i> Add a pricing
-            plan</router-link
-          >
-        </li>
-      </ul>
+    <div v-if="!products.length" class="no-content">
+      You have not created any products yet.
     </div>
   </div>
 </template>
 
 <script>
+import gql from "graphql-tag";
+
 export default {
   name: "MembershipPlans",
   data() {
@@ -240,24 +163,68 @@ export default {
       editingProduct: false,
       editProductRules: {},
       editProductForm: {
-        name: "Some"
+        name: ""
       },
       editingPlan: false,
       editPlanRules: {},
       editPlanForm: {
-        nickname: "nickname"
+        nickname: ""
       },
       addingProduct: false,
       addProductRules: {},
       addProductForm: {
-        name: "name"
+        name: ""
       },
       addingPlan: false,
       addPlanRules: {},
       addPlanForm: {
-        nickname: "nickname"
+        productId: "",
+        nickname: "",
+        interval: "",
+        interval_count: "",
+        amount: ""
       }
     };
+  },
+  apollo: {
+    dojo: {
+      query: gql`
+        query {
+          dojo: getDojo(dojoSlug: "firewall") {
+            id
+            title
+            handle
+            country
+            currency
+            currency_symbol
+            currency_zerodecimal
+          }
+        }
+      `
+    },
+    products: {
+      query: gql`
+        query getBillingProducts($dojoSlug: String!) {
+          products: getBillingProducts(dojoSlug: $dojoSlug) {
+            id
+            name
+            plans {
+              id
+              nickname
+              interval
+              interval_count
+              amount
+              currency
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          dojoSlug: this.$route.params.dojoSlug
+        };
+      }
+    }
   },
   methods: {
     openEditProductDialog(productId) {
@@ -276,6 +243,86 @@ export default {
     openAddProductDialog() {
       this.addProductForm.name = "";
       this.addingProduct = true;
+    },
+    doAddProduct() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($dojoSlug: String!, $name: String!) {
+              newBillingProduct(dojoSlug: $dojoSlug, name: $name) {
+                id
+                name
+              }
+            }
+          `,
+          variables: {
+            dojoSlug: this.$route.params.dojoSlug,
+            name: this.addProductForm.name
+          },
+          update: () => {
+            this.$apollo.queries.products.refetch().then(() => {
+              this.addProductForm.name = "";
+              this.addingProduct = false;
+            });
+          }
+        })
+        .catch(e => {
+          this.errorMessage = e.message;
+        });
+    },
+    doAddPlan() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation(
+              $dojoSlug: String!
+              $product: String!
+              $nickname: String!
+              $interval: String!
+              $interval_count: Int!
+              $amount: Int!
+            ) {
+              newPlan(
+                dojoSlug: $dojoSlug
+                product: $product
+                nickname: $nickname
+                interval: $interval
+                interval_count: $interval_count
+                amount: $amount
+              ) {
+                id
+                nickname
+                interval
+                interval_count
+                amount
+                currency
+              }
+            }
+          `,
+          variables: {
+            dojoSlug: this.$route.params.dojoSlug,
+            product: this.addPlanForm.productId,
+            nickname: this.addPlanForm.nickname,
+            interval: this.addPlanForm.interval,
+            interval_count: 1, // TODO: this.addPlanForm.interval_count,
+            amount: this.addPlanForm.amount
+          },
+          update: () => {
+            this.$apollo.queries.products.refetch().then(() => {
+              this.addPlanForm.name = {
+                productId: "",
+                nickname: "",
+                interval: "",
+                interval_count: "",
+                amount: ""
+              };
+              this.addingPlan = false;
+            });
+          }
+        })
+        .catch(e => {
+          this.errorMessage = e.message;
+        });
     }
   }
 };
@@ -284,6 +331,10 @@ export default {
 <style lang="scss" scoped>
 .membership-plan {
   margin-bottom: 20px;
+  .no-content {
+    color: #888;
+    font-size: 14px;
+  }
   h2 {
     &:hover {
       i {

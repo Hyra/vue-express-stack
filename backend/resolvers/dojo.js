@@ -24,6 +24,18 @@ export default {
         return dojos;
       }
     ),
+    getDojo: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug }, { db }) => {
+        const dojo = await db.dojo.find({
+          where: {
+            handle: dojoSlug
+          }
+        });
+
+        return dojo;
+      }
+    ),
     isHandleAvailable: async (parent, { handle }, { db }) => {
       const availability = await db.dojo.findAll({
         where: {
@@ -284,7 +296,7 @@ export default {
         const billingProduct = await stripe.plans.create(
           {
             nickname: nickname,
-            amount: amount,
+            amount: dojo.currency_zerodecimal ? amount : amount * 100,
             interval: interval,
             interval_count: interval_count,
             product: product,

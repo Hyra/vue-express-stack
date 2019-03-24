@@ -10,6 +10,9 @@ export default gql`
     title: String
     handle: String!
     country: String!
+    currency: String!
+    currency_symbol: String!
+    currency_zerodecimal: Boolean!
   }
 
   type BillingProduct {
@@ -44,6 +47,7 @@ export default gql`
 
   extend type Query {
     dojos: [Dojo!]!
+    getDojo(dojoSlug: String!): Dojo
     isHandleAvailable(handle: String!): Availability
     getStudents(dojoSlug: String!): [Profile]!
     getStudent(dojoSlug: String!, student: String!): Profile!
@@ -76,7 +80,7 @@ export default gql`
       nickname: String!
       interval: String!
       interval_count: Int!
-      amount: String!
+      amount: Int!
     ): Plan!
     deletePlan(dojoSlug: String!, plan: String!): BoolMessage!
     deleteBillingProduct(dojoSlug: String!, product: String!): BoolMessage!

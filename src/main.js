@@ -31,6 +31,29 @@ Vue.use(VueMq, {
   defaultBreakpoint: "sm" // customize this for SSR
 });
 
+Vue.mixin({
+  methods: {
+    parseAmount(amount, currency, currency_zerodecimal) {
+      if ((amount / (currency_zerodecimal ? 1 : 100)) % 1 === 0) {
+        return (amount / (currency_zerodecimal ? 1 : 100))
+          .toLocaleString("en-US", {
+            style: "currency",
+            currency: currency
+          })
+          .slice(0, -3);
+      } else {
+        return (amount / (currency_zerodecimal ? 1 : 100)).toLocaleString(
+          "en-US",
+          {
+            style: "currency",
+            currency: currency
+          }
+        );
+      }
+    }
+  }
+});
+
 // import VueSocketIO from "vue-socket.io";
 // Vue.use(
 //   new VueSocketIO({
