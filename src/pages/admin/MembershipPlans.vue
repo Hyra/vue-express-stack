@@ -115,7 +115,7 @@
             </span>
           </div>
           <div class="plan__price">€60</div>
-          <div class="plan__interval">month</div>
+          <div class="plan__interval">monthly</div>
         </li>
         <li class="plan">
           <div class="plan__description">
@@ -125,7 +125,7 @@
             </span>
           </div>
           <div class="plan__price">€30</div>
-          <div class="plan__interval">month</div>
+          <div class="plan__interval">monthly</div>
         </li>
         <li class="plan">
           <div class="plan__description">
@@ -135,7 +135,7 @@
             </span>
           </div>
           <div class="plan__price">€620</div>
-          <div class="plan__interval">month</div>
+          <div class="plan__interval">monthly</div>
         </li>
         <li>
           <div class="add-plan-link" @click="openAddPlanDialog(1)">
@@ -148,7 +148,7 @@
 
     <div class="membership-plan">
       <h2>
-        Shinkendo
+        Aikido
         <router-link
           class="add-pricing-plan"
           :to="{
@@ -167,7 +167,7 @@
             </span>
           </div>
           <div class="plan__price">€40</div>
-          <div class="plan__interval">month</div>
+          <div class="plan__interval">monthly</div>
         </li>
         <li class="plan">
           <div class="plan__description">
@@ -177,7 +177,7 @@
             </span>
           </div>
           <div class="plan__price">€30</div>
-          <div class="plan__interval">month</div>
+          <div class="plan__interval">monthly</div>
         </li>
         <li>
           <router-link
@@ -195,7 +195,7 @@
 
     <div class="membership-plan">
       <h2>
-        Shinkendo
+        ISF Fee
         <router-link
           class="add-pricing-plan"
           :to="{
