@@ -131,9 +131,10 @@
           </div>
           <!-- <div class="plan__price">{{ plan.currency }} {{ plan.amount }}</div> -->
           <div class="plan__price">
-            {{ parseAmount(plan.amount, plan.currency, false) }}
+            {{ parseAmount(plan.amount, plan.currency, false) }} /
+            {{ plan.interval }}
           </div>
-          <div class="plan__interval">{{ plan.interval }}ly</div>
+          <!-- <div class="plan__interval">{{ plan.interval }}</div> -->
         </li>
         <li v-if="!product.plans.length" class="no-content">
           You have not created any pricing plans for {{ product.name }} yet.
@@ -354,7 +355,7 @@ export default {
     padding: 0;
     li {
       // margin: 0px 0 20px 0;
-      padding: 15px 20px;
+      padding: 15px 10px;
       border-bottom: 1px solid #eee;
       &:last-child {
         border-bottom: 0;
