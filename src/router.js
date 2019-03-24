@@ -117,12 +117,6 @@ export default new Router({
             import(/* webpackChunkName: "membership-plans" */ "./pages/admin/MembershipPlans.vue")
         },
         {
-          path: "billing/membership-plans/:planId",
-          name: "membership-plan",
-          component: () =>
-            import(/* webpackChunkName: "membership-plan" */ "./pages/admin/MembershipPlan.vue")
-        },
-        {
           path: "billing/subscriptions",
           name: "subscriptions",
           component: () =>
