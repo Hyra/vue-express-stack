@@ -4,6 +4,7 @@
       <h1>Student overview</h1>
 
       <router-link
+        class="no-underline"
         :to="{
           name: 'student-new',
           params: { dojoSlug: $route.params.dojoSlug }
