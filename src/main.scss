@@ -213,3 +213,38 @@ button {
     background: none;
   }
 }
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    &:last-child {
+      border-bottom: none;
+    }
+    .flexer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      div {
+        flex: 1;
+      }
+    }
+    &:hover {
+      color: #fff;
+      color: #0e8fff;
+      // background: lighten(#0e8fff, 20%);
+      a {
+        color: #fff;
+        color: #0e8fff;
+      }
+    }
+    a {
+      // padding-left: 20px;
+      text-decoration: none;
+      color: #434343;
+    }
+  }
+}

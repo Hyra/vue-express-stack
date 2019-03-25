@@ -3,6 +3,7 @@
     <div class="blocker__header">
       <h1>{{ student.firstName }} {{ student.lastName }}</h1>
       <router-link
+        class="no-underline"
         :to="{
           name: 'student-edit',
           params: {
@@ -10,8 +11,8 @@
             studentId: $route.params.studentId
           }
         }"
-        ><v-icon name="pencil-alt" scale="1"
-      /></router-link>
+        ><button><i class="fas fa-edit"></i> Edit</button></router-link
+      >
     </div>
     Joined {{ joinDateAgo }} at {{ joinDate }}
   </div>

@@ -165,6 +165,23 @@ export default {
 
         return subscriptions.data;
       }
+    ),
+    getSubscriptions: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const params = {
+          expand: ["data.plan.product", "data.customer"]
+        };
+
+        const subscriptions = await stripe.subscriptions.list(params, {
+          stripe_account: dojo.stripeId
+        });
+
+        return subscriptions.data;
+      }
     )
   },
 

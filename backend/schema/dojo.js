@@ -40,9 +40,12 @@ export default gql`
     id: ID!
     created: String
     days_until_due: Int
+    billing: String
+    status: String
     current_period_start: Int
     current_period_end: Int
-    plan: Plan
+    plan: Plan!
+    customer: User
   }
 
   extend type Query {
@@ -58,6 +61,7 @@ export default gql`
       student: String!
       status: String
     ): [Subscription]!
+    getSubscriptions(dojoSlug: String!): [Subscription]!
   }
 
   extend type Mutation {
