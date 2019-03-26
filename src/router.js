@@ -123,6 +123,12 @@ export default new Router({
             import(/* webpackChunkName: "subscriptions" */ "./pages/admin/Subscriptions.vue")
         },
         {
+          path: "billing/subscription/:subscription",
+          name: "subscription",
+          component: () =>
+            import(/* webpackChunkName: "subscription" */ "./pages/admin/Subscription.vue")
+        },
+        {
           path: "balance",
           name: "balance",
           component: () =>
