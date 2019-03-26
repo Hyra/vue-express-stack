@@ -182,6 +182,26 @@ export default {
 
         return subscriptions.data;
       }
+    ),
+    getSubscription: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, subscription }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const params = {
+          expand: ["plan.product", "customer"]
+        };
+
+        const subscriptionResult = await stripe.subscriptions.retrieve(
+          subscription,
+          params,
+          {
+            stripe_account: dojo.stripeId
+          }
+        );
+        return subscriptionResult;
+      }
     )
   },
 

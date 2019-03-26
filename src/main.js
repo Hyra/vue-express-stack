@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store/";
 import VueMq from "vue-mq";
 import VueTimeago from "vue-timeago";
+import moment from "moment";
 
 import "vue-awesome/icons";
 import Icon from "vue-awesome/components/Icon";
@@ -32,7 +33,14 @@ Vue.use(VueMq, {
 });
 
 Vue.mixin({
+  computed: {},
   methods: {
+    timeAgo(time) {
+      return moment(parseInt(time * 1000)).fromNow();
+    },
+    timeDate(time) {
+      return moment(parseInt(time * 1000)).format("MMMM Do YYYY");
+    },
     parseAmount(amount, currency, currency_zerodecimal) {
       if ((amount / (currency_zerodecimal ? 1 : 100)) % 1 === 0) {
         return (amount / (currency_zerodecimal ? 1 : 100))

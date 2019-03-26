@@ -1,5 +1,5 @@
 <template>
-  <div class="blocker">
+  <div v-loading="$apollo.loading" class="blocker">
     <div class="blocker__header">
       <h1>Subscription</h1>
       <router-link
@@ -18,23 +18,42 @@
     </div>
 
     <el-row>
+      <el-col :span="6"><strong>Plan</strong></el-col>
+      <el-col :span="18"
+        >{{ subscription.plan.product.name }} -
+        {{ subscription.plan.nickname }} @
+        {{
+          parseAmount(
+            subscription.plan.amount,
+            subscription.plan.currency,
+            false
+          )
+        }}
+        / {{ subscription.plan.interval }}</el-col
+      >
+    </el-row>
+
+    <el-row>
       <el-col :span="6"><strong>Customer</strong></el-col>
-      <el-col :span="18">Someone here</el-col>
+      <el-col :span="18">{{ subscription.customer.email }}</el-col>
     </el-row>
 
     <el-row>
       <el-col :span="6"><strong>Subscribed since</strong></el-col>
-      <el-col :span="18">March 20, 2018</el-col>
+      <el-col :span="18">{{ timeDate(subscription.created) }}</el-col>
     </el-row>
 
     <el-row>
       <el-col :span="6"><strong>Current period</strong></el-col>
-      <el-col :span="18">February 24, 2019 to February 31, 2019</el-col>
+      <el-col :span="18"
+        >{{ timeDate(subscription.current_period_start) }} to
+        {{ timeDate(subscription.current_period_end) }}</el-col
+      >
     </el-row>
 
     <el-row>
       <el-col :span="6"><strong>Billing method</strong></el-col>
-      <el-col :span="18">Send invoice</el-col>
+      <el-col :span="18">{{ subscription.billing }}</el-col>
     </el-row>
 
     <hr />
@@ -75,7 +94,7 @@
 </template>
 
 <script>
-// import gql from "graphql-tag";
+import gql from "graphql-tag";
 // import moment from "moment";
 import faker from "faker";
 
@@ -121,35 +140,52 @@ export default {
     }
   },
   apollo: {
-    // student: {
-    //   query: gql`
-    //     query getStudents($dojoSlug: String!, $student: String!) {
-    //       student: getStudent(dojoSlug: $dojoSlug, student: $student) {
-    //         stripeId
-    //         isSensei
-    //         firstName
-    //         lastName
-    //         createdAt
-    //         user {
-    //           email
-    //         }
-    //       }
-    //     }
-    //   `,
-    //   variables() {
-    //     return {
-    //       dojoSlug: this.$route.params.dojoSlug,
-    //       student: this.$route.params.studentId
-    //     };
-    //   },
-    //   error(error) {
-    //     if (error.message.indexOf("No access") > -1) {
-    //       this.$router.push({
-    //         name: "login"
-    //       });
-    //     }
-    //   }
-    // }
+    subscription: {
+      query: gql`
+        query($dojoSlug: String!, $subscription: String!) {
+          subscription: getSubscription(
+            dojoSlug: $dojoSlug
+            subscription: $subscription
+          ) {
+            id
+            created
+            days_until_due
+            billing
+            current_period_start
+            current_period_end
+            customer {
+              id
+              email
+            }
+            plan {
+              id
+              nickname
+              interval
+              interval_count
+              amount
+              currency
+              product {
+                id
+                name
+              }
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          dojoSlug: this.$route.params.dojoSlug,
+          subscription: this.$route.params.subscription
+        };
+      },
+      error(error) {
+        if (error.message.indexOf("No access") > -1) {
+          this.$router.push({
+            name: "login"
+          });
+        }
+      }
+    }
   }
 };
 </script>

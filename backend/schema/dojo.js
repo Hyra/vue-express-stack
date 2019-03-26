@@ -62,6 +62,7 @@ export default gql`
       status: String
     ): [Subscription]!
     getSubscriptions(dojoSlug: String!): [Subscription]!
+    getSubscription(dojoSlug: String!, subscription: String!): Subscription!
   }
 
   extend type Mutation {
