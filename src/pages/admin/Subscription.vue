@@ -60,36 +60,28 @@
 
     <h2>Invoices</h2>
 
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="amount" label="Amount" width="100">
+    <el-table :data="invoices" style="width: 100%">
+      <el-table-column label="Amount" width="100">
+        <template slot-scope="scope">
+          <!-- <i class="el-icon-time"></i> -->
+          {{ parseAmount(scope.row.amount_due, scope.row.currency, false) }}
+        </template>
       </el-table-column>
       <el-table-column prop="status" label="Status" width="120">
       </el-table-column>
-      <el-table-column prop="invoice_nr" label="Invoice Nr." width="180">
+      <el-table-column prop="number" label="Invoice Nr." width="180">
       </el-table-column>
-      <el-table-column prop="payment_due" label="Payment due" width="180">
+      <el-table-column label="Payment due" width="180">
+        <template slot-scope="scope">
+          {{ timeDate(scope.row.due_date) }}
+        </template>
       </el-table-column>
-      <el-table-column prop="created" label="Created"> </el-table-column>
+      <el-table-column label="Created">
+        <template slot-scope="scope">
+          {{ timeDate(scope.row.created) }}
+        </template>
+      </el-table-column>
     </el-table>
-
-    <!-- 
-    <el-row>
-      <el-col :span="4"><strong>Amount</strong></el-col>
-      <el-col :span="4"><strong>Status</strong></el-col>
-      <el-col :span="4"><strong>Invoice Nr.</strong></el-col>
-      <el-col :span="4"><strong>Payment due</strong></el-col>
-      <el-col :span="4"><strong>Created</strong></el-col>
-    </el-row>
-    <el-row v-for="item in 10">
-      <el-col :span="4">€ {{ getRandomAmount() }}</el-col>
-      <el-col :span="4">Open</el-col>
-      <el-col :span="4">5EB33C4-0001</el-col>
-      <el-col :span="4">April 25, 2019</el-col>
-      <el-col :span="4">March 25, 2019</el-col>
-    </el-row> -->
-
-    <!-- <strong>Next invoice</strong><br />
-    €30.00 on Mar 31, 2019 -->
   </div>
 </template>
 
@@ -100,40 +92,6 @@ import faker from "faker";
 
 export default {
   name: "Subscription",
-  computed: {
-    tableData() {
-      return [
-        {
-          amount: `€${faker.random.number({ min: 5, max: 100 })}`,
-          status: "Open",
-          invoice_nr: "5EB33C4-0001",
-          payment_due: "April 25, 2019",
-          created: "March 25, 2019"
-        },
-        {
-          amount: `€${faker.random.number({ min: 5, max: 100 })}`,
-          status: "Open",
-          invoice_nr: "5EB33C4-0001",
-          payment_due: "April 25, 2019",
-          created: "March 25, 2019"
-        },
-        {
-          amount: `€${faker.random.number({ min: 5, max: 100 })}`,
-          status: "Open",
-          invoice_nr: "5EB33C4-0001",
-          payment_due: "April 25, 2019",
-          created: "March 25, 2019"
-        },
-        {
-          amount: `€${faker.random.number({ min: 5, max: 100 })}`,
-          status: "Open",
-          invoice_nr: "5EB33C4-0001",
-          payment_due: "April 25, 2019",
-          created: "March 25, 2019"
-        }
-      ];
-    }
-  },
   methods: {
     getRandomAmount() {
       return faker.random.number({ min: 5, max: 100 });
@@ -169,6 +127,51 @@ export default {
                 name
               }
             }
+          }
+        }
+      `,
+      variables() {
+        return {
+          dojoSlug: this.$route.params.dojoSlug,
+          subscription: this.$route.params.subscription
+        };
+      },
+      error(error) {
+        if (error.message.indexOf("No access") > -1) {
+          this.$router.push({
+            name: "login"
+          });
+        }
+      }
+    },
+    invoices: {
+      query: gql`
+        query($dojoSlug: String!, $subscription: String!) {
+          invoices: getSubscriptionInvoices(
+            dojoSlug: $dojoSlug
+            subscription: $subscription
+          ) {
+            id
+            number
+            receipt_number
+            paid
+            status
+            amount_due
+            amount_paid
+            amount_remaining
+            total
+            subtotal
+            billing
+            created
+            currency
+            customer {
+              id
+              email
+            }
+            due_date
+            invoice_pdf
+            period_start
+            period_end
           }
         }
       `,

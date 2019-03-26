@@ -202,6 +202,23 @@ export default {
         );
         return subscriptionResult;
       }
+    ),
+    getSubscriptionInvoices: combineResolvers(
+      isSenseiOfDojo,
+      async (parent, { dojoSlug, subscription }, { db }) => {
+        // Dojo we're handling
+        const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
+
+        const params = {
+          subscription,
+          expand: ["data.customer"]
+        };
+
+        const invoices = await stripe.invoices.list(params, {
+          stripe_account: dojo.stripeId
+        });
+        return invoices.data;
+      }
     )
   },
 

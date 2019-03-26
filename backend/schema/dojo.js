@@ -48,6 +48,27 @@ export default gql`
     customer: User
   }
 
+  type Invoice {
+    id: ID!
+    number: String
+    receipt_number: String
+    paid: Boolean
+    status: String
+    amount_due: Int
+    amount_paid: Int
+    amount_remaining: Int
+    total: Int
+    subtotal: Int
+    billing: String
+    created: String
+    currency: String
+    customer: User
+    due_date: String
+    invoice_pdf: String
+    period_start: String
+    period_end: String
+  }
+
   extend type Query {
     dojos: [Dojo!]!
     getDojo(dojoSlug: String!): Dojo
@@ -63,6 +84,10 @@ export default gql`
     ): [Subscription]!
     getSubscriptions(dojoSlug: String!): [Subscription]!
     getSubscription(dojoSlug: String!, subscription: String!): Subscription!
+    getSubscriptionInvoices(
+      dojoSlug: String!
+      subscription: String!
+    ): [Invoice]!
   }
 
   extend type Mutation {
