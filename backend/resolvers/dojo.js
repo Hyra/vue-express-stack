@@ -457,12 +457,29 @@ export default {
     ),
     deleteStudentSubscription: combineResolvers(
       isSenseiOfDojo,
-      async (parent, { dojoSlug, plan }, { db }) => {
+      async (parent, { dojoSlug, subscription, cancelImmediately }, { db }) => {
         // Dojo we're handling
         const dojo = await db.dojo.findOne({ where: { handle: dojoSlug } });
 
         try {
-          await stripe.subscriptions.del(plan, {
+          let params = {};
+          if (cancelImmediately) {
+            params = {
+              prorate: false,
+              invoice_now: true
+            };
+          } else {
+            await stripe.subscriptions.update(
+              subscription,
+              {
+                cancel_at_period_end: true
+              },
+              {
+                stripe_account: dojo.stripeId
+              }
+            );
+          }
+          await stripe.subscriptions.del(subscription, params, {
             stripe_account: dojo.stripeId
           });
         } catch (e) {
@@ -474,7 +491,7 @@ export default {
 
         return {
           result: true,
-          message: "Product succesfully deleted"
+          message: "Subscription succesfully deleted"
         };
       }
     ),
