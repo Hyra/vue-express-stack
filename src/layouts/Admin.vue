@@ -85,15 +85,7 @@
             </div>
           </div>
           <div class="container">
-            <transition
-              name="fade"
-              mode="out-in"
-              @beforeLeave="beforeLeave"
-              @enter="enter"
-              @afterEnter="afterEnter"
-            >
-              <router-view
-            /></transition>
+            <transition name="fade" mode="out-in"> <router-view /></transition>
           </div>
         </div>
       </div>

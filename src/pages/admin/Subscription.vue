@@ -1,20 +1,48 @@
 <template>
-  <div v-loading="$apollo.loading" class="blocker">
+  <div v-if="subscription" v-loading="$apollo.loading" class="blocker">
+    <el-dialog
+      title="Cancel subscription"
+      :visible.sync="cancelingSubscription"
+      width="30%"
+    >
+      <el-form
+        ref="cancelSubscription"
+        :rules="cancelSubscriptionRules"
+        :model="cancelSubscriptionForm"
+        label-width="120px"
+        label-position="left"
+      >
+        When do you want this subscription to end? <br /><br />
+        <el-radio
+          v-model="cancelSubscriptionForm.cancelImmediately"
+          :label="true"
+          >Cancel immediately</el-radio
+        >
+        <br /><br />
+        <el-radio
+          v-model="cancelSubscriptionForm.cancelImmediately"
+          :label="false"
+          >Cancel at the end of the current period on
+          {{ timeDate(subscription.current_period_end) }}</el-radio
+        >
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelingSubscription = false">Never mind</el-button>
+        <el-button
+          :loading="$apollo.loading"
+          type="primary"
+          @click="doCancelSubscription"
+          >Cancel subscription</el-button
+        >
+      </span>
+    </el-dialog>
+
     <div class="blocker__header">
       <h1>Subscription</h1>
-      <router-link
-        class="no-underline"
-        :to="{
-          name: 'student-edit',
-          params: {
-            dojoSlug: $route.params.dojoSlug,
-            studentId: $route.params.studentId
-          }
-        }"
-        ><button type="danger">
-          <i class="fas fa-trash-alt"></i> Cancel Subscription
-        </button></router-link
-      >
+      <button type="danger" @click="openCancelSubscriptionDialog">
+        <i class="fas fa-trash-alt"></i> Cancel Subscription
+      </button>
     </div>
 
     <el-row>
@@ -88,13 +116,62 @@
 <script>
 import gql from "graphql-tag";
 // import moment from "moment";
-import faker from "faker";
+// import faker from "faker";
 
 export default {
   name: "Subscription",
+  data() {
+    return {
+      cancelingSubscription: false,
+      cancelSubscriptionRules: {},
+      cancelSubscriptionForm: {
+        cancelImmediately: true
+      }
+    };
+  },
   methods: {
-    getRandomAmount() {
-      return faker.random.number({ min: 5, max: 100 });
+    openCancelSubscriptionDialog() {
+      this.cancelingSubscriptionForm = {
+        cancelImmediately: true
+      };
+      this.cancelingSubscription = true;
+    },
+    doCancelSubscription() {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation(
+            $dojoSlug: String!
+            $subscription: String!
+            $cancelImmediately: Boolean!
+          ) {
+            deleteStudentSubscription(
+              dojoSlug: $dojoSlug
+              subscription: $subscription
+              cancelImmediately: $cancelImmediately
+            ) {
+              result
+              message
+            }
+          }
+        `,
+        variables: {
+          dojoSlug: this.$route.params.dojoSlug,
+          subscription: this.$route.params.subscription,
+          cancelImmediately: this.cancelSubscriptionForm.cancelImmediately
+        },
+        update: () => {
+          this.$router.push({
+            name: "subscriptions"
+          });
+        },
+        error(error) {
+          if (error.message.indexOf("No access") > -1) {
+            this.$router.push({
+              name: "login"
+            });
+          }
+        }
+      });
     }
   },
   apollo: {

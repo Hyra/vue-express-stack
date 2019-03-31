@@ -120,7 +120,11 @@ export default gql`
       plan: String!
       start: String
     ): BoolMessage!
-    deleteStudentSubscription(dojoSlug: String!, plan: String!): BoolMessage!
+    deleteStudentSubscription(
+      dojoSlug: String!
+      subscription: String!
+      cancelImmediately: Boolean
+    ): BoolMessage!
     deleteStudent(dojoSlug: String!, student: String!): BoolMessage!
     editProduct(
       dojoSlug: String!
