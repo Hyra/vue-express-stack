@@ -118,7 +118,7 @@ export default gql`
       dojoSlug: String!
       student: String!
       plan: String!
-      start: String
+      start: Int
     ): BoolMessage!
     deleteStudentSubscription(
       dojoSlug: String!

@@ -136,7 +136,9 @@ export default {
         });
         // const billingProducts = await stripe.products
         const billingProducts = await stripe.plans.list(
-          {},
+          {
+            expand: ["data.product"]
+          },
           {
             stripe_account: dojo.stripeId
           }
