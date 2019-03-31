@@ -40,6 +40,12 @@
           <div>{{ subscription.billing }}</div>
         </router-link>
       </li>
+      <li v-if="!subscriptions.length">
+        <center>
+          <br />
+          You have not created any subscriptions for your students yet.
+        </center>
+      </li>
     </ul>
   </div>
 </template>
